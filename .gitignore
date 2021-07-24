@@ -1,10 +1,11 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
-templates/
-
+utils/__pycache__/
+model/__pycache__/
+Not_Ready_func/
 .env
 
-trail.sql
+templates/
 
 spcchart.py
 spc.py

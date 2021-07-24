@@ -1,5 +1,5 @@
+from flask_sqlalchemy import SQLAlchemy
 from flask import render_template
-from alchemy_db import *
 from app import app
 db = SQLAlchemy()
 

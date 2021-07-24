@@ -7,5 +7,6 @@ templates/
 trail.sql
 
 spcchart.py
+spc.py
 config.py
 spcchart.py

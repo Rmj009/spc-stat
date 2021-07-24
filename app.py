@@ -31,7 +31,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 #     axis.plot(xs, ys)
 #     return fig
 
-@app.route('/front', methods=['GET'])
+@app.route('/front', methods=['GET','POST'])
 def index():
   if request.method == "GET":
     try: 

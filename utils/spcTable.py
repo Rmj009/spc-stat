@@ -131,7 +131,7 @@ class SpcTable:
             else:
                 yy = j1.filter(table_smph.work_order_op_history_uuid == wooh_uuid)
                 queryResult = [row for row in session.execute(yy)]
-                return queryResult
+            return queryResult
 
         except DatabaseError:
             db.session.rollback()

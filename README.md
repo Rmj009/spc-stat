@@ -21,37 +21,53 @@
 
   - Local **機台** 資訊 **API URL**
   
-## 🎻 ./lib/constant/constant.go 參數
+## 🎻 app.py 參數
 
 - `AppMode`
 
   - `dev`: 開發使用
 
-    - 可以跳脫 **SSO** 邏輯 方便開發
-    - 可以在 middleware 中 設定 `constant.TenantId` 方便開發
-
-  - `pro`:
-
-    - 正式環境使用
+    <!---待填  **SSO** 邏輯 方便開發 -->
     
-- `PhotoExpirationTime`
-   - 拿照片 從 firebase 的過期時間
+- `Params 根據使用者輸入四項參數收尋資料庫`
+  - `'startTime'`
+  - `'endTime'`
+  - `'workOrderOpHistoryUUID'`
+  - `'spcMeasurePointConfigUUID'`
 
-- `DownloadMaxCount`
-   - 工單下載量
-
-- `FirebaseBucket`
-   - firebaseBucket url
-
-### Folder: ./docker 可在 local 端跑測試 DB
-
-- 跑起來：
+- `跑起來`：
 
    - `python3 app.py`
 
-- 關掉：
+## 🎻  API回傳值
 
-   - `docker-compose -f docker-compose.yml down --rmi all`
+- `Capability`
+  - `"good"`
+  - `"totalNum"`
+  - `"goodRate"`
+  - `"USL"`
+  - `"LSL"`
+  - `"UCL"`
+  - `"LCL"`
+  - `"overallMean"`
+  - `"target"`
+  - `"range"`
+  - `"Cpu"`
+  - `"Cpl"`
+  - `"Cp"`
+  - `"Ck"`
+  - `"Cpk"`
+  - `"Ppk"`
+
+- `Nelson`
+  - `data array`
+  - `rule1 array`
+  - `rule2 array`
+  - `rule3 array`
+  -       .
+  -       .
+  -       .
+  - `rule8 array`
 
 ## [Change Log](CHANGELOG.md)
 

@@ -111,7 +111,7 @@ def GormToCPR():
   lsllst = request.args.get('LSL')
   goodlst = request.args.get('good')
   defectlst = request.args.get('defect')
-  amount = request.args.get('amount') #measureAmount
+  measureAmount = request.args.get('measureAmount') #measureAmount
   stdValue = request.args.get('stdValue')
   try:
     if (points == None) or (len(points) == 0):
@@ -129,17 +129,17 @@ def GormToCPR():
     elif (defectlst == None) or (len(defectlst) == 0):
       result = 'DefectInvaild'
       return result, 400
-    elif (amount == None) or (len(amount) == 0):
-      result = 'AmountInvaild'
+    elif (measureAmount == None) or (len(measureAmount) == 0):
+      result = 'measureAmountInvaild'
       return result, 400
     elif (stdValue == None) or (len(stdValue) == 0):
       result = 'StdValueInvaild'
       return result, 400
     else:
-      # GormResult = [points,[goodlst],[defectlst],[lsllst],[usllst],[amount],[stdValue]]
-      # CapabilityCol = ["points","goodlst","defectlst","lsllst","usllst","amount","stdValue"]
+      # GormResult = [points,[goodlst],[defectlst],[lsllst],[usllst],[measureAmount],[stdValue]]
+      # CapabilityCol = ["points","goodlst","defectlst","lsllst","usllst","measureAmount","stdValue"]
       # GormResults = dict(zip(CapabilityCol, GormResult))
-      result = Gauge.stats(points,goodlst,defectlst,lsllst,usllst,amount,stdValue)
+      result = Gauge.stats(points,goodlst,defectlst,lsllst,usllst,measureAmount,stdValue)
       return result, 200
   except Exception as errors:
     print('error',errors)

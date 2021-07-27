@@ -3,30 +3,30 @@ import numpy as np
 
 
 class Gauge(Calculator):
-    def __init__(self, points,good,defect,LSLlst,USLlst,amount,stdValue):
-        super().__init__(points,good,defect,LSLlst,USLlst,amount,stdValue)
+    def __init__(self, points,good,defect,LSLlst,USLlst,measureAmount,stdValue):
+        super().__init__(points,good,defect,LSLlst,USLlst,measureAmount,stdValue)
         self.points = points
         self.good = good 
         self.defect = defect
         self.LSLlst = LSLlst
         self.USLlst = USLlst
-        self.amount = amount
+        self.measureAmount = measureAmount
         self.stdValue = stdValue
     
     def __repr__(self):
         return f"SpcMeasurePointConfigUUID: {self.spmcUUID},{self.points}."
 
-    def stats(points,good,defect,LSLlst,USLlst,amount,stdValue):
+    def stats(points,good,defect,LSLlst,USLlst,measureAmount,stdValue):
         points = points.split(',')
         points = [ float(i) for i in points]
         # [dict([i, int(x)] for i, x in b.items()) for b in list]
-        df = np.array([good,defect,LSLlst,USLlst,amount,stdValue]).astype(float)#,index=integer_array)
+        df = np.array([good,defect,LSLlst,USLlst,measureAmount,stdValue]).astype(float)#,index=integer_array)
         Target = df[-1]
         good = df[0]
         defect = df[1]
         LSLlst = df[2]
         USLlst = df[3]
-        amount = df[4]
+        measureAmount = df[4]
         stdValue = df[5]
         USL = Target + USLlst
         LSL = Target - LSLlst
@@ -38,9 +38,9 @@ class Gauge(Calculator):
         goodRate = good / totalNum
 
         
-        ngroup = int(len(df))/int(amount)
+        ngroup = int(len(df))/int(measureAmount)
         if (ngroup.is_integer() == False):
-            cpkarr = np.array_split(points[::-1],len(points)//amount) #revserve to split coz the array_split method
+            cpkarr = np.array_split(points[::-1],len(points)//measureAmount) #revserve to split coz the array_split method
             cpkarrMEAN = [np.mean(i) for i in cpkarr]
             sigmaCpk = np.std(cpkarrMEAN,ddof=1) #pd.std() >>> //(n)
         else:

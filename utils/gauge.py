@@ -33,7 +33,6 @@ class Gauge(Calculator):
         LCL = (LSL + Target)/2
         UCL = (USL + Target)/2
         rangespec = USL - LSL
-        print('rangespec',rangespec)
         totalNum = good + defect
         goodRate = good / totalNum
 
@@ -44,17 +43,12 @@ class Gauge(Calculator):
             cpkarrMEAN = [np.mean(i) for i in cpkarr]
             sigmaCpk = np.std(cpkarrMEAN,ddof=1) #pd.std() >>> //(n)
         else:
-            print('datashape[0]')
             cpkarr = np.array_split(points,ngroup)
             cpkarrMEAN = [np.mean(i) for i in cpkarr]
             sigmaCpk = np.std(cpkarrMEAN,ddof=1) # numpy standard deviation >>> //(n-1)
         cp_mean = np.mean(points)
         sigmaPpk = np.std(points,ddof=1)
         sigmaCpk = 1.33
-        print('sigmaPpk',sigmaPpk)
-        # Calculator.calc
-        # except Exception as error:
-        #     print('err',error)
 
         if (sigmaCpk == 0) or (sigmaPpk == 0):
             raise Exception('SigmAomaly') 

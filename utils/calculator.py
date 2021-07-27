@@ -7,17 +7,20 @@ Douglas C. Montgomery-Introduction to statistical quality control 7th edtition-W
 Part III chapter 8.3, p362.-p372
 """
 class Calculator(object):
-    # def __init__(self,tbls,sojourn):
-    #     self.tbls = tbls
-    #     self.sojourn = sojourn
-    # def __del__(self,object):  #1>>> cleanup the seq, 2>>> return the seq after drop point(s)
-    #     print('drop points...')
-    #     dropindex = np.argwhere(max(object) or min(object))
-    #     sequences = np.delete(object,object[1]) #specific points
-    #     return sequences
+    def __init__(self, spmcUUID, sequences):
+        self.sequences = sequences
+        self.spmcUUID = spmcUUID
 
-    # def __repr__(self) -> str:
-    #     return super().__repr__()
+    def __del__(self,object):  #1>>> cleanup the seq, 2>>> return the seq after drop point(s)
+        print('drop points...')
+        # dropindex = np.argwhere(max(object) or min(object))
+        sequences = np.delete(object,object[1]) #specific points
+        return sequences
+
+    def __repr__(self) -> str:
+        print(f"SpcMeasurePointConfigUUID: {self.spmcUUID}")
+        
+        return super().__repr__()
 
     def calc(datatables):
         try:

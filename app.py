@@ -1,14 +1,29 @@
 # export DATABASE_URL='postgres://localhost:5432/
-import os
+import time,os,redis
 # ,html,sys,traceback
 from flask import Flask, request, render_template
 from flask_sqlalchemy import SQLAlchemy
 # from flask_cors import CORS
 from utils.spcTable import SpcTable
+from utils.gauge import Gauge
 from errors import *
+import pandas as pd
 app = Flask(__name__, static_url_path='')
 app.config["DEBUG"] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+cache = redis.Redis(host='redis', port=6379)
+
+def get_hit_count():
+    retries = 5
+    while True:
+        try:
+            return cache.incr('hits')
+        except redis.exceptions.ConnectionError as exc:
+            if retries == 0:
+                raise exc
+            retries -= 1
+            time.sleep(0.5)
+
 
 #------------CONFIGURATION--------------
 # print(os.getcwd()) # print the pwd status
@@ -88,10 +103,56 @@ def nelson():
     print('error',errors)
     return 'Query Fail',errors, 500
 
+
+@app.route("/v1/capability-new", methods=['GET'])
+def GormToCPR():
+  points = request.args.get('points')
+  usllst = request.args.get('USL') 
+  lsllst = request.args.get('LSL')
+  goodlst = request.args.get('good')
+  defectlst = request.args.get('defect')
+  amount = request.args.get('amount') #measureAmount
+  stdValue = request.args.get('stdValue')
+  try:
+    if (points == None) or (len(points) == 0):
+      result = 'PointsInvaild'
+      return result, 400
+    elif (usllst == None) or (len(usllst) == 0):
+      result = 'USLInvaild'
+      return result, 400
+    elif (lsllst == None) or (len(lsllst) == 0):
+      result = 'LSLInvaild'
+      return result, 400
+    elif (goodlst == None) or (len(goodlst) == 0):
+      result = 'GOODInvaild'
+      return result, 400
+    elif (defectlst == None) or (len(defectlst) == 0):
+      result = 'DefectInvaild'
+      return result, 400
+    elif (amount == None) or (len(amount) == 0):
+      result = 'AmountInvaild'
+      return result, 400
+    elif (stdValue == None) or (len(stdValue) == 0):
+      result = 'StdValueInvaild'
+      return result, 400
+    else:
+      # GormResult = [points,[goodlst],[defectlst],[lsllst],[usllst],[amount],[stdValue]]
+      # CapabilityCol = ["points","goodlst","defectlst","lsllst","usllst","amount","stdValue"]
+      # GormResults = dict(zip(CapabilityCol, GormResult))
+      result = Gauge.stats(points,goodlst,defectlst,lsllst,usllst,amount,stdValue)
+      return result, 200
+  except Exception as errors:
+    print('error',errors)
+    return 'CalcFail',errors, 500
+
+
+
 #-----------------ENTRANCE-----------------------
 @app.route('/', methods=['GET'])
 def home():
-  return 'API ok', 200
+  # count = get_hit_count()
+  # return ('API ok! Counting {} times.\n').format(count)
+  return 'api ok!',200
 
 if __name__ == "__main__":
   app.debug = True

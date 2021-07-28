@@ -2,9 +2,9 @@ from utils.calculator import Calculator
 import numpy as np
 
 
-class Gauge(Calculator):
+class Gauge():
     def __init__(self, points,good,defect,LSLlst,USLlst,measureAmount,stdValue):
-        super().__init__(points,good,defect,LSLlst,USLlst,measureAmount,stdValue)
+        # super().__init__(points,good,defect,LSLlst,USLlst,measureAmount,stdValue)
         self.points = points
         self.good = good 
         self.defect = defect
@@ -14,10 +14,11 @@ class Gauge(Calculator):
         self.stdValue = stdValue
     
     def __repr__(self):
-        return f"SpcMeasurePointConfigUUID: {self.spmcUUID},{self.points}."
+        return f"SpcMeasurePointConfigUUID:{self.points,self.defect,self.LSLlst,self.USLlst,self.measureAmount,self.stdValue}."
 
     def stats(points,good,defect,LSLlst,USLlst,measureAmount,stdValue):
         points = points.split(',')
+        print('pppp:::')
         points = [ float(i) for i in points]
         # [dict([i, int(x)] for i, x in b.items()) for b in list]
         df = np.array([good,defect,LSLlst,USLlst,measureAmount,stdValue]).astype(float)#,index=integer_array)
@@ -27,7 +28,6 @@ class Gauge(Calculator):
         LSLlst = df[2]
         USLlst = df[3]
         measureAmount = df[4]
-        stdValue = df[5]
         USL = Target + USLlst
         LSL = Target - LSLlst
         LCL = (LSL + Target)/2
@@ -48,13 +48,11 @@ class Gauge(Calculator):
             sigmaCpk = np.std(cpkarrMEAN,ddof=1) # numpy standard deviation >>> //(n-1)
         cp_mean = np.mean(points)
         sigmaPpk = np.std(points,ddof=1)
-        sigmaCpk = 1.33
 
-        if (sigmaCpk == 0) or (sigmaPpk == 0):
-            raise Exception('SigmAomaly') 
         assert sigmaPpk != 0
         assert sigmaCpk != 0
-
+        if (sigmaCpk == 0) or (sigmaPpk == 0):
+            raise Exception('SigmAomaly')
         Cp = (rangespec) / (sigmaCpk*6) 
         Ck = abs((Target - cp_mean)/ (rangespec / 2))
         Cpu = (USL - cp_mean) / (sigmaCpk*3)
@@ -68,6 +66,5 @@ class Gauge(Calculator):
         CPR = good, totalNum, goodRate ,USL,LSL,UCL,LCL,cp_mean,Target ,rangespec, Cpu, Cpl, Cp, Ck, Cpk, Ppk
         keys = ["good","totalNum","goodRate","USL","LSL","UCL","LCL","overallMean","target","range","Cpu","Cpl","Cp","Ck","Cpk","Ppk"]
         capability = dict(zip(keys, CPR))
-        print('capability::',capability)
         ### Reference :https://en.wikipedia.org/wiki/Process_performance_index
         return capability # total 17

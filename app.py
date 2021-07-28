@@ -7,7 +7,6 @@ from flask_sqlalchemy import SQLAlchemy
 from utils.spcTable import SpcTable
 from utils.gauge import Gauge
 from errors import *
-import pandas as pd
 app = Flask(__name__, static_url_path='')
 app.config["DEBUG"] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

@@ -363,10 +363,8 @@ def drawchart2(original):
     plt.savefig('static/img/classicialcc2.png')
     return fig 
 
-# result = apply_rules(original=data)
-# # print('rrrr',enumerate(result))
-# # sns.set_style('whitegrid')
-# # sns.kdeplot([j for i,j in enumerate(result[0])], bw=0.5)
+# sns.set_style('whitegrid')
+# sns.kdeplot([j for i,j in enumerate(result[0])], bw=0.5)
 # result[0].plot(kind='density')
 # plt.show()
 

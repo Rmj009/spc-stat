@@ -1,4 +1,5 @@
-from utils.calculator import Calculator
+# from utils.calculator import Calculator
+from utils.nelsonRules import *
 import numpy as np
 
 
@@ -18,7 +19,6 @@ class Gauge():
 
     def stats(points,good,defect,LSLlst,USLlst,measureAmount,stdValue):
         points = points.split(',')
-        print('pppp:::')
         points = [ float(i) for i in points]
         # [dict([i, int(x)] for i, x in b.items()) for b in list]
         df = np.array([good,defect,LSLlst,USLlst,measureAmount,stdValue]).astype(float)#,index=integer_array)
@@ -68,3 +68,31 @@ class Gauge():
         capability = dict(zip(keys, CPR))
         ### Reference :https://en.wikipedia.org/wiki/Process_performance_index
         return capability # total 17
+    
+    def nelson(points):
+        points = points.split(',')
+        points = [ float(i) for i in points]
+        nelsonBool = apply_rules(original=points) # markup points after rules verified
+        # print(nelsonBool)
+        df_list = nelsonBool.values.tolist()
+        # print(df_list)
+        NelsonCol = ["data","rule1","rule2","rule3","rule4","rule5","rule6","rule7","rule8"]
+        """
+        Another parsing method requires to be mentioned.
+         NelsonContext = pd.DataFrame()
+         for j in range(len(NelsonCol)):
+             NelsonContext[NelsonCol[j]] = [item[j] for item in df_list]
+        """
+        data = [item[0] for item in df_list]
+        rule1 = [item[1] for item in df_list]
+        rule2 = [item[2] for item in df_list]
+        rule3 = [item[3] for item in df_list]
+        rule4 = [item[4] for item in df_list]
+        rule5 = [item[5] for item in df_list]
+        rule6 = [item[6] for item in df_list]
+        rule7 = [item[7] for item in df_list]
+        rule8 = [item[8] for item in df_list]
+        columnValue = [data,rule1,rule2,rule3,rule4,rule5,rule6,rule7,rule8]
+        NelsonContext = dict(zip(NelsonCol,columnValue))
+        # NelsonContext = json.loads(NelsonContext.to_json(orient="split"))
+        return NelsonContext

@@ -18,8 +18,7 @@ class Gauge():
         return f"SpcMeasurePointConfigUUID:{self.points,self.defect,self.LSLlst,self.USLlst,self.measureAmount,self.stdValue}."
 
     def stats(points,good,defect,LSLlst,USLlst,measureAmount,stdValue):
-        points = points.split(',')
-        points = [ float(i) for i in points]
+        points = [ float(i) for i in points.split(',')]
         # [dict([i, int(x)] for i, x in b.items()) for b in list]
         df = np.array([good,defect,LSLlst,USLlst,measureAmount,stdValue]).astype(float)#,index=integer_array)
         Target = df[-1]
@@ -70,8 +69,7 @@ class Gauge():
         return capability # total 17
     
     def nelson(points):
-        points = points.split(',')
-        points = [ float(i) for i in points]
+        points = [ float(i) for i in points.split(',')]
         nelsonBool = apply_rules(original=points) # markup points after rules verified
         # print(nelsonBool)
         df_list = nelsonBool.values.tolist()

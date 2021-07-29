@@ -1,5 +1,5 @@
 # export DATABASE_URL='postgres://localhost:5432/
-import time,os,redis
+import time,os #,redis
 # ,html,sys,traceback
 from flask import Flask, request, render_template
 from flask_sqlalchemy import SQLAlchemy
@@ -10,18 +10,18 @@ from errors import *
 app = Flask(__name__, static_url_path='')
 app.config["DEBUG"] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-cache = redis.Redis(host='redis', port=6379)
+# cache = redis.Redis(host='redis', port=6379)
 
-def get_hit_count():
-    retries = 5
-    while True:
-        try:
-            return cache.incr('hits')
-        except redis.exceptions.ConnectionError as exc:
-            if retries == 0:
-                raise exc
-            retries -= 1
-            time.sleep(0.5)
+# def get_hit_count():
+#     retries = 5
+#     while True:
+#         try:
+#             return cache.incr('hits')
+#         except redis.exceptions.ConnectionError as exc:
+#             if retries == 0:
+#                 raise exc
+#             retries -= 1
+#             time.sleep(0.5)
 
 
 #------------CONFIGURATION--------------

@@ -3,15 +3,26 @@ import time,os #,redis
 # ,html,sys,traceback
 from flask import Flask, request, render_template
 from flask_sqlalchemy import SQLAlchemy
+# from flask_oauth import OAuth
+# from flask_oauthlib.provider import OAuth2Provider
+# https://pythonhosted.org/Flask-OAuth/
+
 # from flask_cors import CORS
+from components.flask_middleware import printMiddleware
 from utils.spcTable import SpcTable
 from utils.gauge import Gauge
+from utils.spcchart import SpcChart
+
 from errors import *
 app = Flask(__name__, static_url_path='')
 app.config["DEBUG"] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.logger.debug('A value for debugging')
+app.logger.error('An error occurred')
 # cache = redis.Redis(host='redis', port=6379)
+app.wsgi_app = printMiddleware(app.wsgi_app) # print API have called
 
+# oauth = OAuth()
 # def get_hit_count():
 #     retries = 5
 #     while True:
@@ -148,18 +159,28 @@ def GormToCPR():
 @app.route("/v1/nelson-new", methods=['GET'])
 def GormToNelson():
   points = request.args.get('points')
-  # usllst = request.args.get('USL') 
-  # lsllst = request.args.get('LSL')
-  # goodlst = request.args.get('good')
-  # defectlst = request.args.get('defect')
-  # measureAmount = request.args.get('measureAmount')
-  # stdValue = request.args.get('stdValue')
   try:
     if (points == None) or (len(points) == 0):
       result = 'PointsInvaild'
       return result, 400
     else:
       result = Gauge.nelson(points)
+      return result, 200
+
+  except Exception as errors:
+    print('SHOWerror',errors)
+    return 'CalcFail', 500
+
+@app.route("/v1/spchart", methods=['GET'])
+def spcChart():
+  points = request.args.get('points')
+  try:
+    if (points == None) or (len(points) == 0):
+      result = 'PointsInvaild'
+      return result, 400
+    else:
+      # result = Gauge.nelson(points)
+      result = SpcChart(data = points)
       return result, 200
 
   except Exception as errors:
@@ -175,5 +196,4 @@ def home():
   return 'api ok!',200
 
 if __name__ == "__main__":
-  app.debug = True
   app.run(host=os.getenv('HOST'), debug=True, port=os.getenv('PORT'))

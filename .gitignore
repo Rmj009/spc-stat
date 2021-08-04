@@ -7,8 +7,5 @@ Not_Ready_func/
 .env
 
 templates/
-
-spcchart.py
-spc.py
 config.py
 spcchart.py

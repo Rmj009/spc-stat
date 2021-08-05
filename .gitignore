@@ -6,6 +6,8 @@ components/__pycache__/
 Not_Ready_func/
 .env
 
+static/
 templates/
+swagger/
 config.py
 spcchart.py

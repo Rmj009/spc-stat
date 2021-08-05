@@ -5,7 +5,7 @@ from sqlalchemy import create_engine,exc #select, column, join,
 from sqlalchemy.orm import sessionmaker, aliased
 from sqlalchemy.exc import DatabaseError
 from flask_sqlalchemy import SQLAlchemy
-# from sqlalchemy.orm.query import QueryContext
+from sqlalchemy.orm.query import QueryContext
 from utils.calculator import Calculator
 from utils.nelsonRules import *
 from model.setting import *
@@ -39,12 +39,12 @@ cpl,cp,cpk,ppk,..
 """
 #-----------------------------------------------
 class SpcTable:
-    def __init__(self,rule):
-        self.rule = rule
+    # def __init__(self,rule):
+    #     self.rule = rule
         
-    def __repr__(self) -> str:
-        print(f'Query and wrap up dataflow')
-        return super().__repr__()
+    # def __repr__(self) -> str:
+    #     print(f'Query and wrap up dataflow')
+    #     return super().__repr__()
     def drawchart1(datapoints):
         #---------invoke western------------
         # datapoints = valuelst

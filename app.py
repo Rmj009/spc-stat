@@ -1,7 +1,7 @@
 # export DATABASE_URL='postgres://localhost:5432/
 import time,os #,redis
 # ,html,sys,traceback
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, g
 from flask_sqlalchemy import SQLAlchemy
 # from flask_oauth import OAuth
 # from flask_oauthlib.provider import OAuth2Provider
@@ -21,6 +21,31 @@ app.logger.debug('A value for debugging')
 app.logger.error('An error occurred')
 # cache = redis.Redis(host='redis', port=6379)
 app.wsgi_app = printMiddleware(app.wsgi_app) # print API have called
+
+@app.before_request
+def BearerAuth():
+  print('before request started')
+  print('URL:{0}'.format(request.url))
+  print('---------------')
+  print(f'Headers:',request.headers)
+  print('---------------')
+  g.name = "API Called"
+    # abort(400) 
+# 1. Get request header token: [SPC] request.header = xxx
+# 2. Build user api (https://dotzerotech-user-api.dotzero.app/v2/permission/app?name=spc) request with auth token in header
+# 3. ok: next
+# not ok: abort()
+@app.before_request
+def before_request2():
+    print('before request started 2')
+    print(request.url)
+
+@app.after_request
+def after_request(response):
+    print('after request finished')
+    print(request.url)
+    response.headers['key'] = 'value'
+    return response
 
 # oauth = OAuth()
 # def get_hit_count():
@@ -193,7 +218,7 @@ def spcChart():
 def home():
   # count = get_hit_count()
   # return ('API ok! Counting {} times.\n').format(count)
-  return 'api ok!',200
+  return '{0}'.format(g.name),200
 
 if __name__ == "__main__":
   app.run(host=os.getenv('HOST'), debug=True, port=os.getenv('PORT'))

@@ -14,20 +14,76 @@
       "url": "http://localhost:5000"
     }
   ],
-  "authorizations" : {
-    "apikey": {
-        "type": "apiKey",
-        "in": "header",
-        "name": "Authorization",
-        "description": "Type in the *'Value'* input box below: **'Bearer &lt;JWT&gt;'**, where JWT is the token"
+  "components": {
+    "schemas": {
+      "SpcMeasurePointHistory": {
+        "required": [
+          "UUID"
+        ],
+        "properties": {
+          "UUID": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "createTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updateTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "tenantId": {
+            "type": "string"
+          },
+          "workOrderOpHistoryUUID": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "spcMeasurePointConfigUUID": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "spcMeasureInstrumentUUID": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "measureObjectID": {
+            "type": "integer"
+          },
+          "workerID": {
+            "description": "worker ID",
+            "type": "string"
+          },
+          "value": {
+            "type": "number",
+            "format": "float"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT" 
+      }
     }
   },
-  "security":{
-    "BearerAuth": []
-  },
+  "security":[
+    {
+      "BearerAuth": []
+    }
+  ],
   "paths": {
     "/v1/nelson": {
       "get": {
+        "security":[
+          {
+            "BearerAuth": []
+          }
+          
+        ],          
         "tags": [
           "statistics"
         ],

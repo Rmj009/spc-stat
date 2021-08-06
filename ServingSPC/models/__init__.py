@@ -7,8 +7,7 @@
 model/__init__.py contains the table definitions, the ORM classes and an init_model() function. 
 This init_model() function must be called at application startup. 
 """
-from model.init import *
-from model.setting import *
+from ServingSPC.models.setting import *
 # from model.meta import Session, Base
 
 # from model.footwear import Footwear, FootwearType

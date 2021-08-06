@@ -1,8 +1,0 @@
-{
-	"scripts": {
-		"doc": "live-server ."
-	},
-	"devDependencies": {
-		"live-server": "^1.2.0"
-	}
-}

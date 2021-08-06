@@ -1,4 +1,4 @@
-from components.alchemy_db import spc_measure_point_config,spc_measure_point_history,work_order_op_history
+from ServingSPC.components.alchemy_db import spc_measure_point_config,spc_measure_point_history,work_order_op_history
 from re import A
 import os,json
 from sqlalchemy import create_engine,exc #select, column, join,
@@ -6,14 +6,14 @@ from sqlalchemy.orm import sessionmaker, aliased
 from sqlalchemy.exc import DatabaseError
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm.query import QueryContext
-from utils.calculator import Calculator
-from utils.nelsonRules import *
-from model.setting import *
+from ServingSPC.utils.calculator import Calculator
+from ServingSPC.utils.nelsonRules import *
+from ServingSPC.models.setting import *
 
 
 db = SQLAlchemy() # db.init_app(app)
 # engine = create_engine('postgresql://postgres:edge9527@localhost:5432/dev_tenant')
-# print(os.getenv('PG_URL'))
+print(os.getenv('PG_URL'))
 engine = create_engine(os.getenv('PG_URL'))
 
 Session = sessionmaker(bind=engine)

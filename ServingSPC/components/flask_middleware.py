@@ -15,7 +15,7 @@ class printMiddleware(object):
 
     def __call__(self, environ, start_response):
         print('— — — — — — — — — —')
-        print('API called',self.app)
+        print('API called',self)
         print('— — — — — — — — — —')
         # not Flask request - from werkzeug.wrappers import Request
         request = Request(environ)

@@ -15,19 +15,34 @@ import requests
 # https://pythonhosted.org/Flask-OAuth/
 
 # from flask_cors import CORS
-from components.flask_middleware import printMiddleware
-from utils.spcTable import SpcTable
-from utils.gauge import Gauge
-from utils.spcchart import SpcChart
+from ServingSPC.components.flask_middleware import printMiddleware
+from ServingSPC.utils.spcTable import SpcTable
+from ServingSPC.utils.gauge import Gauge
+from ServingSPC.utils.spcchart import SpcChart
 
-from errors import *
 app = Flask(__name__, static_url_path='/static')
 app.config["DEBUG"] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.logger.debug('A value for debugging')
 app.logger.error('An error occurred')
 # cache = redis.Redis(host='redis', port=6379)
+db = SQLAlchemy()
+# class PassGateway:
+@app.errorhandler(404)
+def not_found_error(error):
+    return render_template('404.html'),error, 404
 
+@app.errorhandler(500)
+def internal_error(error):
+    db.session.rollback()
+    return render_template('500.html'),error, 500
+
+# @app.teardown_appcontext
+# def shotdown_session(error):
+#     print ("@app.teardown_appcontext: shotdown_session()")
+#     db.session.remove()
+#     db.session.rollback()
+#     return error, 500
 
 
 # class BearerAuth_flask(object):

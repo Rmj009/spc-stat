@@ -1,5 +1,5 @@
 # from utils.calculator import Calculator
-from utils.nelsonRules import *
+from ServingSPC.utils.nelsonRules import *
 import numpy as np
 
 
@@ -40,14 +40,16 @@ class Gauge():
         if (ngroup.is_integer() == False):
             cpkarr = np.array_split(points[::-1],len(points)//measureAmount) #revserve to split coz the array_split method
             cpkarrMEAN = [np.mean(i) for i in cpkarr]
+            cpkarrSTD =  [np.std(i,ddof=1) for i in cpkarr]
             sigmaCpk = np.std(cpkarrMEAN,ddof=1) #pd.std() >>> //(n)
         else:
             cpkarr = np.array_split(points,ngroup)
             cpkarrMEAN = [np.mean(i) for i in cpkarr]
+            cpkarrSTD =  [np.std(i,ddof=1) for i in cpkarr]
             sigmaCpk = np.std(cpkarrMEAN,ddof=1) # numpy standard deviation >>> //(n-1)
         cp_mean = np.mean(points)
         sigmaPpk = np.std(points,ddof=1)
-
+ 
         assert sigmaPpk != 0
         assert sigmaCpk != 0
         if (sigmaCpk == 0) or (sigmaPpk == 0):
@@ -62,11 +64,11 @@ class Gauge():
         Ppl = (cp_mean - LCL) / (sigmaPpk*3)
         Ppk = np.min([Ppu,Ppl]) 
         # capability ratio
-        CPR = good, totalNum, goodRate ,USL,LSL,UCL,LCL,cp_mean,Target ,rangespec, Cpu, Cpl, Cp, Ck, Cpk, Ppk
-        keys = ["good","totalNum","goodRate","USL","LSL","UCL","LCL","overallMean","target","range","Cpu","Cpl","Cp","Ck","Cpk","Ppk"]
+        CPR = sigmaPpk, cpkarrSTD, good, totalNum, goodRate ,USL,LSL,UCL,LCL,cp_mean,Target ,rangespec, Cpu, Cpl, Cp, Ck, Cpk, Ppk
+        keys = ["sigma","group-sigma","good","totalNum","goodRate","USL","LSL","UCL","LCL","overallMean","target","range","Cpu","Cpl","Cp","Ck","Cpk","Ppk"]
         capability = dict(zip(keys, CPR))
         ### Reference :https://en.wikipedia.org/wiki/Process_performance_index
-        return capability # total 17
+        return capability # total 17 + 2
     
     def nelson(points):
         points = [ float(i) for i in points.split(',')]

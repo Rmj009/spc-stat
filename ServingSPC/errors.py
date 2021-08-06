@@ -1,9 +1,8 @@
-from flask_sqlalchemy import SQLAlchemy
-from flask import render_template
-# import request
-# from flask import request
+# from flask_sqlalchemy import SQLAlchemy
+# from flask import render_template
+# # import request
+# # from flask import request
 # from app import app
-db = SQLAlchemy()
 
 #-------ERROR Handling----------
 """

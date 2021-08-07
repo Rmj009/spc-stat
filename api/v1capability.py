@@ -1,4 +1,4 @@
-from utils.spcTable import SpcTable
+from ..utils.spcTable import SpcTable
 from flask import request
 
 def capability(app):

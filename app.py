@@ -1,6 +1,6 @@
 from logging import error
-import time,os #,redis
-# ,html,sys,traceback
+import sys,os #,redis
+from os.path import abspath, dirname
 from flask import Flask, request, render_template, g
 from flask.json import jsonify
 from flask_sqlalchemy import SQLAlchemy
@@ -17,13 +17,14 @@ import requests
 """
 import API as below
 """
-from models.setting import *
-from api.docs import swaggerDOC
-from api.v1nelson import nelson
-from api.v1capability import capability
-from api.nelsonNew import GormToNelson
-from api.capabilityNew import GormToCPR
-from components.flask_middleware import printMiddleware
+sys.path.insert(0, dirname(dirname(abspath(__file__))))
+from .models.setting import *
+from .api.docs import swaggerDOC
+from .api.v1nelson import nelson
+from .api.v1capability import capability
+from .api.nelsonNew import GormToNelson
+from .api.capabilityNew import GormToCPR
+from .components.flask_middleware import printMiddleware
 #######################################################
  #########  spc-backend-statistics START   ###########
 #######################################################

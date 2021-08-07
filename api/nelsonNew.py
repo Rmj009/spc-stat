@@ -1,6 +1,6 @@
 # from app import app
 from flask import request
-from utils.gauge import Gauge
+from ..utils.gauge import Gauge
 
 def GormToNelson(app):
     @app.route("/v1/nelson-new", methods=['GET'])

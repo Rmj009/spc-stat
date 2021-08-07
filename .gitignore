@@ -11,3 +11,5 @@ templates/
 swagger/
 config.py
 spcchart.py
+blog.py
+auth_flask.py

@@ -48,14 +48,16 @@ def internal_error(error):
 # class BearerAuth_flask(object):
 
 @app.before_request
-def BearerAuth():
-  app.wsgi_app = printMiddleware(app.wsgi_app) # print API have called
+def BearerAuth(token):
+  if token != None:
+    app.wsgi_app = printMiddleware(app.wsgi_app) # print API have called
   # print('before request started')
   # print('URL:{0}'.format(request.url))
   # print('---------------')
   # print(f'Headers:',request.headers)
   # print('---------------')
   g.name = "Authorization"
+  
   # print(type(request.headers))
   # print(str(request.headers))
   # print(request.form.get())

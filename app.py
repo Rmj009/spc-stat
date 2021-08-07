@@ -18,21 +18,19 @@ import requests
 import API as below
 """
 sys.path.insert(0, dirname(dirname(abspath(__file__))))
-from .models.setting import *
 from .api.docs import swaggerDOC
 from .api.v1nelson import nelson
 from .api.v1capability import capability
 from .api.nelsonNew import GormToNelson
 from .api.capabilityNew import GormToCPR
-from .components.flask_middleware import printMiddleware
+from .models.flask_middleware import printMiddleware
 #######################################################
  #########  spc-backend-statistics START   ###########
 #######################################################
 app = Flask(__name__, static_url_path='/static')
 app.config["DEBUG"] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.logger.debug('A value for debugging')
-app.logger.error('An error occurred')
+app.logger.debug('A value for debugging') #app.logger.error('An error occurred')
 # cache = redis.Redis(host='redis', port=6379)
 # auth_flask.
 db = SQLAlchemy()
@@ -49,7 +47,6 @@ def internal_error(error):
 
 # print('PG_URLPG_URLPG_URLPG_URL',os.getenv('PG_URL'),sep='\n')
 # print('PPPPP',os.environ['PG_URL'],sep='\n')
-
 class callAPI:
   app.wsgi_app = printMiddleware(app.wsgi_app)
   swaggerDOC(app)

@@ -1,6 +1,6 @@
-import os
 from os.path import join, dirname
 from dotenv import load_dotenv
+import os
 # from dotenv import dotenv_values
 print('Before load_dotenv()', os.getenv('PG_URL')) #DBCONN_STR or SERVER IP
 dotenv_path = join(dirname(__file__), '.env')

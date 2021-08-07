@@ -5,15 +5,3 @@ model/__pycache__/
 components/__pycache__/
 Not_Ready_func/
 
-static/
-templates/
-swagger/
-test/
-
-config.py
-spcchart.py
-blog.py
-auth_flask.py
-
-spc-backend-statistics.code-workspace
-.env

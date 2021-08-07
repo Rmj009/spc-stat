@@ -14,13 +14,18 @@ import requests
 # https://pythonhosted.org/Flask-OAuth/
 
 # from flask_cors import CORS
+"""
+import API as below
+"""
 from components.flask_middleware import printMiddleware
-from utils.spcTable import SpcTable
-from utils.gauge import Gauge
-from utils.spcchart import SpcChart
+from api.docs import swaggerDOC
+from api.v1nelson import nelson
+from api.v1capability import capability
 from api.nelsonNew import GormToNelson
 from api.capabilityNew import GormToCPR
-
+#######################################################
+ #########  spc-backend-statistics START   ###########
+#######################################################
 app = Flask(__name__, static_url_path='/static')
 app.config["DEBUG"] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -39,20 +44,23 @@ def internal_error(error):
     db.session.rollback()
     return render_template('500.html'),error, 500
 
-# @app.teardown_appcontext
-# def shotdown_session(error):
-#     print ("@app.teardown_appcontext: shotdown_session()")
-#     db.session.remove()
-#     db.session.rollback()
-#     return error, 500
+class callAPI:
+  app.wsgi_app = printMiddleware(app.wsgi_app)
+  swaggerDOC(app)
+  capability(app)
+  nelson(app)
+  GormToNelson(app)
+  GormToCPR(app)
+
 
 
 # class BearerAuth_flask(object):
-
-# @app.before_request
-# def BearerAuth(token):
-#   if token != None:
-#     app.wsgi_app = printMiddleware(app.wsgi_app) # print API have called
+#   @app.before_request
+#   def BearerAuth(token):
+#     if token != None:
+#       app.wsgi_app = printMiddleware(app.wsgi_app) # print API have called
+#     else:
+#       return token
 #   # print('before request started')
 #   # print('URL:{0}'.format(request.url))
 #   # print('---------------')
@@ -89,14 +97,17 @@ def internal_error(error):
 # def before_request2():
 #     # print('before request started 2')
 #     # print(request.url)
-class ShowUsers(View):
 # https://dormousehole.readthedocs.io/en/latest/views.html
-    def dispatch_request(self):
-      print(f'=========')
-        # users = User.query.all()
-      return render_template('index2.html')#, objects=users)
+class ShowUsers(View):
+  def dispatch_request(self):
+    print(f'=========')
+    # users = User.query.all()
+    print(f'=========')
+    return#, objects=users)
+
 
 app.add_url_rule('/users/', view_func=ShowUsers.as_view('show_users'))
+
 # oauth = OAuth()
 # def get_hit_count():
 #     retries = 5
@@ -109,105 +120,6 @@ app.add_url_rule('/users/', view_func=ShowUsers.as_view('show_users'))
 #             retries -= 1
 #             time.sleep(0.5)
 
-
-#------------CONFIGURATION--------------
-# print(os.getcwd()) # print the pwd status
-#----------------GET-------------------
-# @app.route('/plot.png')
-# def plot_png():
-#     fig = create_figure()
-#     output = io.BytesIO()
-#     FigureCanvas(fig).print_png(output)
-#     return Response(output.getvalue(), mimetype='static/img/Nelson65.png')
-# def create_figure():
-#     fig = Figure()
-#     axis = fig.add_subplot(1, 1, 1)
-#     xs = range(100)
-#     ys = [random.randint(1, 50) for x in xs]
-#     axis.plot(xs, ys)
-#     return fig
-
-@app.route('/front', methods=['GET','POST'])
-def index():
-  if request.method == "GET":
-    try: 
-      return render_template('index2.html', title="spc_show", name = 'new_plot', url ='/static/Nelson65.png')
-    except Exception as e:
-      print('type of:',type(e))
-
-@app.route('/api-docs')
-def get_docs():
-    print('sending docs')
-    return render_template('swaggerui.html')
-
-@app.route("/v1/capability", methods=['GET'])
-def capability():
-  # query params
-  try:
-    begin = request.args.get('startTime')
-    endtime = request.args.get('endTime') 
-    wuuid = request.args.get('workOrderOpHistoryUUID')
-    suuid = request.args.get('spcMeasurePointConfigUUID')  
-    
-    if (begin == None) or (len(begin) == 0):
-      result = 'startTimeError'
-      return result, 400
-    elif (endtime == None) or (len(endtime) == 0):
-      result = 'endTimeError'
-      return result, 400
-    elif (suuid == None) or (len(suuid) == 0):
-      result = 'configPointErr'
-      return result, 400
-    else:
-      result = SpcTable.CPRfunc(beginTime=begin, finalTime=endtime, wuuid=wuuid, suuid=suuid)
-      return result, 200
-  except Exception as errors:
-    return ' Failure %s:',errors, 500
-
-@app.route("/v1/nelson", methods=['GET'])
-def nelson():
-  begin = request.args.get('startTime')
-  endtime = request.args.get('endTime') 
-  wuuid = request.args.get('workOrderOpHistoryUUID')
-  suuid = request.args.get('spcMeasurePointConfigUUID')
-  try:
-    if (suuid == None) or (len(suuid) == 0):
-      result = 'config point error'
-      return result, 400
-    elif (begin == None) or (len(begin) == 0):
-      result = 'start time error'
-      return result, 400
-    elif (endtime == None) or (len(endtime) == 0):
-      result = 'end time error'
-      return result, 400
-    else:
-      result = SpcTable.Nelsonfunc(beginTime=begin, finalTime=endtime, wuuid=wuuid, suuid=suuid)
-      return result, 200
-  except Exception as errors:
-
-    print('error',errors)
-    return 'Query Fail',errors, 500
-
-
-class SPC_statistics(object):
-
-  @app.route("/v1/spchart", methods=['GET'])
-  def spcChart():
-    points = request.args.get('points')
-    try:
-      if (points == None) or (len(points) == 0):
-        result = 'PointsInvaild'
-        return result, 400
-      else:
-        # result = Gauge.nelson(points)
-        result = SpcChart(data = points)
-        return result, 200
-
-    except Exception as errors:
-      print('SHOWerror',errors)
-      return 'CalcFail', 500
-
-
 @app.after_request
 def after_request(response):
     print('after request finished')
@@ -217,26 +129,14 @@ def after_request(response):
     # print('PostData:',post_data)
     return response
 
-
-
 # app.add_url_rule('/v1/capability-new', view_func=BearerAuth_flask.as_view('/v1/capability-new'))
 # app.add_url_rule('/cap/', view_func=SPC_statistics.as_view('show_users'))
-
-
-GormToNelson(app)
-GormToCPR(app)
 #-----------------ENTRANCE-----------------------
 @app.route('/', methods=['GET'])
 def home():
   # count = get_hit_count()
   # return ('API ok! Counting {} times.\n').format(count)
   return '{0}'.format(g.name),200
-
-# @app.teardown_request
-# def teardown_request(Exception):
-#   print ('teardown request')
-#   print (request.url)
-#   # raise Exception
 
 
 if __name__ == "__main__":

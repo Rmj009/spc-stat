@@ -1,7 +1,7 @@
 from logging import error
 import sys,os #,redis
 from os.path import abspath, dirname
-from flask import Flask, request, render_template, g
+from flask import Flask, request, render_template,Blueprint, g
 from flask.json import jsonify
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.datastructures import Headers
@@ -18,6 +18,7 @@ import requests
 import API as below
 """
 sys.path.insert(0, dirname(dirname(abspath(__file__))))
+from .api.root import app2    # Blueprint example
 from .api.docs import swaggerDOC
 from .api.v1nelson import nelson
 from .api.v1capability import capability
@@ -33,6 +34,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.logger.debug('A value for debugging') #app.logger.error('An error occurred')
 # cache = redis.Redis(host='redis', port=6379)
 # auth_flask.
+app.register_blueprint(app2)
 db = SQLAlchemy()
 # class PassGateway:
 @app.errorhandler(404)

@@ -1,4 +1,3 @@
-# export DATABASE_URL='postgres://localhost:5432/
 from logging import error
 import time,os #,redis
 # ,html,sys,traceback
@@ -15,10 +14,12 @@ import requests
 # https://pythonhosted.org/Flask-OAuth/
 
 # from flask_cors import CORS
-from ServingSPC.components.flask_middleware import printMiddleware
-from ServingSPC.utils.spcTable import SpcTable
-from ServingSPC.utils.gauge import Gauge
-from ServingSPC.utils.spcchart import SpcChart
+from components.flask_middleware import printMiddleware
+from utils.spcTable import SpcTable
+from utils.gauge import Gauge
+from utils.spcchart import SpcChart
+from api.nelsonNew import GormToNelson
+from api.capabilityNew import GormToCPR
 
 app = Flask(__name__, static_url_path='/static')
 app.config["DEBUG"] = True
@@ -26,6 +27,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.logger.debug('A value for debugging')
 app.logger.error('An error occurred')
 # cache = redis.Redis(host='redis', port=6379)
+# auth_flask.
 db = SQLAlchemy()
 # class PassGateway:
 @app.errorhandler(404)
@@ -47,16 +49,16 @@ def internal_error(error):
 
 # class BearerAuth_flask(object):
 
-@app.before_request
-def BearerAuth(token):
-  if token != None:
-    app.wsgi_app = printMiddleware(app.wsgi_app) # print API have called
-  # print('before request started')
-  # print('URL:{0}'.format(request.url))
-  # print('---------------')
-  # print(f'Headers:',request.headers)
-  # print('---------------')
-  g.name = "Authorization"
+# @app.before_request
+# def BearerAuth(token):
+#   if token != None:
+#     app.wsgi_app = printMiddleware(app.wsgi_app) # print API have called
+#   # print('before request started')
+#   # print('URL:{0}'.format(request.url))
+#   # print('---------------')
+#   # print(f'Headers:',request.headers)
+#   # print('---------------')
+#   g.name = "Authorization"
   
   # print(type(request.headers))
   # print(str(request.headers))
@@ -189,63 +191,6 @@ def nelson():
 
 class SPC_statistics(object):
 
-  @app.route("/v1/capability-new", methods=['GET'])
-  def GormToCPR():
-    points = request.args.get('points')
-    usllst = request.args.get('USL') 
-    lsllst = request.args.get('LSL')
-    goodlst = request.args.get('good')
-    defectlst = request.args.get('defect')
-    measureAmount = request.args.get('measureAmount') #measureAmount
-    stdValue = request.args.get('stdValue')
-    try:
-      if (points == None) or (len(points) == 0):
-        result = 'PointsInvaild'
-        return result, 400
-      elif (usllst == None) or (len(usllst) == 0):
-        result = 'USLInvaild'
-        return result, 400
-      elif (lsllst == None) or (len(lsllst) == 0):
-        result = 'LSLInvaild'
-        return result, 400
-      elif (goodlst == None) or (len(goodlst) == 0):
-        result = 'GOODInvaild'
-        return result, 400
-      elif (defectlst == None) or (len(defectlst) == 0):
-        result = 'DefectInvaild'
-        return result, 400
-      elif (measureAmount == None) or (len(measureAmount) == 0):
-        result = 'measureAmountInvaild'
-        return result, 400
-      elif (stdValue == None) or (len(stdValue) == 0):
-        result = 'StdValueInvaild'
-        return result, 400
-      else:
-        # GormResult = [points,[goodlst],[defectlst],[lsllst],[usllst],[measureAmount],[stdValue]]
-        # CapabilityCol = ["points","goodlst","defectlst","lsllst","usllst","measureAmount","stdValue"]
-        # GormResults = dict(zip(CapabilityCol, GormResult))
-        result = Gauge.stats(points,goodlst,defectlst,lsllst,usllst,measureAmount,stdValue)
-        return result, 200
-    except Exception as errors:
-      print('error',errors)
-      return 'CalcFail', 500
-
-
-  @app.route("/v1/nelson-new", methods=['GET'])
-  def GormToNelson():
-    points = request.args.get('points')
-    try:
-      if (points == None) or (len(points) == 0):
-        result = 'PointsInvaild'
-        return result, 400
-      else:
-        result = Gauge.nelson(points)
-        return result, 200
-
-    except Exception as errors:
-      print('SHOWerror',errors)
-      return 'CalcFail', 500
-
   @app.route("/v1/spchart", methods=['GET'])
   def spcChart():
     points = request.args.get('points')
@@ -277,6 +222,9 @@ def after_request(response):
 # app.add_url_rule('/v1/capability-new', view_func=BearerAuth_flask.as_view('/v1/capability-new'))
 # app.add_url_rule('/cap/', view_func=SPC_statistics.as_view('show_users'))
 
+
+GormToNelson(app)
+GormToCPR(app)
 #-----------------ENTRANCE-----------------------
 @app.route('/', methods=['GET'])
 def home():
@@ -292,4 +240,5 @@ def home():
 
 
 if __name__ == "__main__":
+  app.debug = True
   app.run(host=os.getenv('HOST'), debug=True, port=os.getenv('PORT'))

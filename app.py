@@ -17,12 +17,13 @@ import requests
 """
 import API as below
 """
-from components.flask_middleware import printMiddleware
+from models.setting import *
 from api.docs import swaggerDOC
 from api.v1nelson import nelson
 from api.v1capability import capability
 from api.nelsonNew import GormToNelson
 from api.capabilityNew import GormToCPR
+from components.flask_middleware import printMiddleware
 #######################################################
  #########  spc-backend-statistics START   ###########
 #######################################################
@@ -43,6 +44,10 @@ def not_found_error(error):
 def internal_error(error):
     db.session.rollback()
     return render_template('500.html'),error, 500
+
+
+# print('PG_URLPG_URLPG_URLPG_URL',os.getenv('PG_URL'),sep='\n')
+# print('PPPPP',os.environ['PG_URL'],sep='\n')
 
 class callAPI:
   app.wsgi_app = printMiddleware(app.wsgi_app)

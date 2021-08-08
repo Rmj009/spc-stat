@@ -11,8 +11,8 @@ from ..utils.nelsonRules import *
 
 db = SQLAlchemy() 
 # db.init_app(app)
-engine = create_engine('postgresql://postgres:edge9527@localhost:5432/dev_tenant',echo = False)
-# engine = create_engine(os.getenv('PG_URL'),echo = False)
+# engine = create_engine('postgresql://postgres:edge9527@localhost:5432/dev_tenant',echo = False)
+engine = create_engine(os.getenv('PG_URL'),echo = False)
 # print('PG_URLPG_URLPG_URLPG_URL',os.getenv('PG_URL'),sep='\n')
 connection = engine.connect()
 

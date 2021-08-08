@@ -1,18 +1,18 @@
 from logging import error
 import sys,os #,redis
 from os.path import abspath, dirname
-from flask import Flask, request,Blueprint, g
+from flask import Flask, request
 from flask.json import jsonify
 from werkzeug.datastructures import Headers
 from werkzeug.wrappers import response
 from flask.views import View
-import requests
+# import requests
 
 # from flask_oauth import OAuth
+# from flask_cors import CORS
 # from flask_oauthlib.provider import OAuth2Provider
 # https://pythonhosted.org/Flask-OAuth/
 
-# from flask_cors import CORS
 """
 import API as below
 """
@@ -37,8 +37,6 @@ app.config["DEBUG"] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.logger.debug('A value for debugging') #app.logger.error('An error occurred')
 # cache = redis.Redis(host='redis', port=6379)
-# auth_flask.
-app.register_blueprint(app2)
 
 # class PassGateway:
 
@@ -54,7 +52,6 @@ app.register_blueprint(app2)
 #   # print('---------------')
 #   # print(f'Headers:',request.headers)
 #   # print('---------------')
-#   g.name = "Authorization"
   
   # print(type(request.headers))
   # print(str(request.headers))
@@ -84,6 +81,8 @@ app.register_blueprint(app2)
 class callAPI:
   app.wsgi_app = printMiddleware(app.wsgi_app)
   HandleFlaskerr(app)
+  app.register_blueprint(app2)
+
   swaggerDOC(app)
   capability(app)
   nelson(app)
@@ -129,14 +128,10 @@ def after_request(response):
 
 # app.add_url_rule('/v1/capability-new', view_func=BearerAuth_flask.as_view('/v1/capability-new'))
 # app.add_url_rule('/cap/', view_func=SPC_statistics.as_view('show_users'))
+
+
+
 #-----------------ENTRANCE-----------------------
-@app.route('/', methods=['GET'])
-def home():
-  # count = get_hit_count()
-  # return ('API ok! Counting {} times.\n').format(count)
-  return '{0}'.format(g.name),200
-
-
 if __name__ == "__main__":
   app.debug = True
   app.run(host=os.getenv('HOST'), debug=True, port=os.getenv('PORT'))

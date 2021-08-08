@@ -10,4 +10,4 @@ ENV PG_URL='postgresql://postgres:edge9527@host.docker.internal:5432/dev_tenant'
 ENV PORT=5000
 ENV PATH="FLASK_APP/"
 EXPOSE 5000
-CMD ["python3","/flask run"]
+CMD ["python3","flask run"]

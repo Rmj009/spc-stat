@@ -19,8 +19,8 @@ import API as below
 sys.path.insert(0, dirname(dirname(abspath(__file__))))
 from .api.root import app2    # Blueprint example
 from .api.docs import swaggerDOC
-from .api.v1nelson import nelson
-from .api.v1capability import capability
+# from .api.v1nelson import nelson
+# from .api.v1capability import capability
 from .api.nelsonNew import GormToNelson
 from .api.capabilityNew import GormToCPR
 from .api.routes.errHandler import HandleFlaskerr
@@ -84,8 +84,8 @@ class callAPI:
   app.register_blueprint(app2)
 
   swaggerDOC(app)
-  capability(app)
-  nelson(app)
+  # capability(app)
+  # nelson(app)
   GormToNelson(app)
   GormToCPR(app)
 

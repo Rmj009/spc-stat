@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 # import seaborn as sns
 
 # df = pd.read_csv('workbook_name.csv', sep=',',header=0); nmp = df.to_numpy() ;data = nmp[:,11]#; data = pd.DataFrame(nmp[:,11])
-# data = spcTable.data
 """
 REFERENCE:
 Douglas C. Montgomery-Introduction to statistical quality control 7th edtition-Wiley (2009)

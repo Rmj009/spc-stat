@@ -7,6 +7,8 @@ from werkzeug.datastructures import Headers
 from werkzeug.wrappers import response
 from flask.views import View
 # import requests
+import asyncio
+
 
 # from flask_oauth import OAuth
 # from flask_cors import CORS
@@ -36,9 +38,6 @@ app = Flask(__name__, static_url_path='/static')
 app.config["DEBUG"] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.logger.debug('A value for debugging') #app.logger.error('An error occurred')
-# cache = redis.Redis(host='redis', port=6379)
-
-# class PassGateway:
 
 # class BearerAuth_flask(object):
 #   @app.before_request
@@ -90,20 +89,22 @@ class callAPI:
   GormToCPR(app)
 
 
+loop = asyncio.get_event_loop()
+loop.run_until_complete(GormToNelson(app))
 # @app.before_request
 # def before_request2():
 #     # print('before request started 2')
 #     # print(request.url)
 # https://dormousehole.readthedocs.io/en/latest/views.html
-class ShowUsers(View):
-  def dispatch_request(self):
-    print(f'=========')
-    # users = User.query.all()
-    print(f'=========')
-    return#, objects=users)
+# class ShowUsers(View):
+#   def dispatch_request(self):
+#     print(f'=========')
+#     # users = User.query.all()
+#     print(f'=========')
+#     return#, objects=users)
 
 
-app.add_url_rule('/users/', view_func=ShowUsers.as_view('show_users'))
+# app.add_url_rule('/users/', view_func=ShowUsers.as_view('show_users'))
 
 # oauth = OAuth()
 # def get_hit_count():
@@ -124,6 +125,7 @@ def after_request(response):
     response.headers['key'] = 'value'
     # post_data = request.get_json()
     # print('PostData:',post_data)
+    print(response)
     return response
 
 # app.add_url_rule('/v1/capability-new', view_func=BearerAuth_flask.as_view('/v1/capability-new'))
@@ -134,4 +136,4 @@ def after_request(response):
 #-----------------ENTRANCE-----------------------
 if __name__ == "__main__":
   app.debug = True
-  app.run(host=os.getenv('HOST'), debug=True, port=os.getenv('PORT'))
+  app.run(host=os.getenv('HOST'), debug=False, port=os.getenv('PORT'))

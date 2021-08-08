@@ -1,4 +1,3 @@
-# from app import app
 from flask import request
 from ..utils.gauge import Gauge
 

@@ -1,9 +1,8 @@
 from logging import error
 import sys,os #,redis
 from os.path import abspath, dirname
-from flask import Flask, request, render_template,Blueprint, g
+from flask import Flask, request,Blueprint, g
 from flask.json import jsonify
-from flask_sqlalchemy import SQLAlchemy
 from werkzeug.datastructures import Headers
 from werkzeug.wrappers import response
 from flask.views import View
@@ -24,10 +23,15 @@ from .api.v1nelson import nelson
 from .api.v1capability import capability
 from .api.nelsonNew import GormToNelson
 from .api.capabilityNew import GormToCPR
+from .api.routes.errHandler import HandleFlaskerr
 from .models.flask_middleware import printMiddleware
+
+
 #######################################################
  #########  spc-backend-statistics START   ###########
 #######################################################
+
+
 app = Flask(__name__, static_url_path='/static')
 app.config["DEBUG"] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -35,29 +39,8 @@ app.logger.debug('A value for debugging') #app.logger.error('An error occurred')
 # cache = redis.Redis(host='redis', port=6379)
 # auth_flask.
 app.register_blueprint(app2)
-db = SQLAlchemy()
+
 # class PassGateway:
-@app.errorhandler(404)
-def not_found_error(error):
-    return render_template('404.html'),error, 404
-
-@app.errorhandler(500)
-def internal_error(error):
-    db.session.rollback()
-    return render_template('500.html'),error, 500
-
-
-# print('PG_URLPG_URLPG_URLPG_URL',os.getenv('PG_URL'),sep='\n')
-# print('PPPPP',os.environ['PG_URL'],sep='\n')
-class callAPI:
-  app.wsgi_app = printMiddleware(app.wsgi_app)
-  swaggerDOC(app)
-  capability(app)
-  nelson(app)
-  GormToNelson(app)
-  GormToCPR(app)
-
-
 
 # class BearerAuth_flask(object):
 #   @app.before_request
@@ -96,6 +79,16 @@ class callAPI:
 # not ok: abort()
 
 # app.add_url_rule('', view_func=as_view('/v1/capability-new'))
+
+
+class callAPI:
+  app.wsgi_app = printMiddleware(app.wsgi_app)
+  HandleFlaskerr(app)
+  swaggerDOC(app)
+  capability(app)
+  nelson(app)
+  GormToNelson(app)
+  GormToCPR(app)
 
 
 # @app.before_request

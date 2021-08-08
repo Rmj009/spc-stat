@@ -1,10 +1,14 @@
-# from app import app
 from flask import request
+from fastapi import Depends
 from ..utils.gauge import Gauge
+from ..auth.security import validate_request
+# from ..models.nelsonNew import nelsonNew
 
 def GormToNelson(app):
     @app.route("/v1/nelson-new", methods=['GET'])
-    def NelsonAPI():
+    def NelsonAPI(
+        authentication: bool = Depends(validate_request)
+    ):
         points = request.args.get('points')
         try:
             if (points == None) or (len(points) == 0):

@@ -1,7 +1,7 @@
 from logging import error
 import sys,os #,redis
 from os.path import abspath, dirname
-from flask import Flask #, request
+from flask import Flask ,request
 from flask.json import jsonify
 # from werkzeug.datastructures import Headers
 from werkzeug.wrappers import response
@@ -37,6 +37,7 @@ app = Flask(__name__, static_url_path='/static')
 app.config["DEBUG"] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.logger.debug('A value for debugging') #app.logger.error('An error occurred')
+app.register_blueprint(app2)
 
 # class BearerAuth_flask(object):
 
@@ -76,29 +77,55 @@ app.logger.debug('A value for debugging') #app.logger.error('An error occurred')
 
 
 
+# import requests
+# import asyncio
+# from flask_api import status
+
+# async def async_check_auth(AuthorizationToken):
+#   url = os.getenv('DZ_TOKEN_PERMISSION')
+#   headers = { 'Authorization': AuthorizationToken}
+#   # r = requests.get(url, headers=headers)
+#   response = requests.request("GET", url, headers=headers) #, data=payload, files=files)
+#   json_text = response.json()
+#   if response.status_code != 200:
+
+#     return False
+#     # 400, status.HTTP_400_BAD_REQUEST
+
+#   elif json_text['access'] == True:
+
+#     return True
+#     # 400, status.HTTP_400_BAD_REQUEST
+
+#   else:
+#     return False
+
+# @app.before_request
+# def auth():
+#   header = request.headers
+#   AuthorizationToken =  header['Authorization']
+#   is_auth = asyncio.run(async_check_auth(AuthorizationToken))
+#   if is_auth is not True:
+#     # abort(400)
+#     return 400, status.HTTP_400_BAD_REQUEST
+
+
+
+
+
 
 @app.before_request
 def BearerAuth():
   app.wsgi_app = printMiddleware(app.wsgi_app)
 
   return
-  
-  # url = "https://dotzerotech-user-api.dotzero.app/v2/permission/app?name=spc"
-#   payload={}
-#   files={}
-#   headers = { 'Authorization': 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6ImFlMDVlZmMyNTM2YjJjZTdjNTExZjRiMTcyN2I4NTkyYTc5ZWJiN2UiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiRFogQWRtaW4iLCJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYWxlcnQtaGVpZ2h0LTI1NzMwNCIsImF1ZCI6ImFsZXJ0LWhlaWdodC0yNTczMDQiLCJhdXRoX3RpbWUiOjE2Mjg0OTE0OTQsInVzZXJfaWQiOiIwVUt5S1MzVmw4ZTExc3VhWVFqdmYydWp6SXoxIiwic3ViIjoiMFVLeUtTM1ZsOGUxMXN1YVlRanZmMnVqekl6MSIsImlhdCI6MTYyODQ5MTQ5NCwiZXhwIjoxNjI4NDk1MDk0LCJlbWFpbCI6ImRldi5pb0Bkb3R6ZXJvLnRlY2giLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsiZGV2LmlvQGRvdHplcm8udGVjaCJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIiwidGVuYW50IjoiZ3JvdXAxLXQweXEwIn19.cnLNufXeQ1Fq60xBfvmuEZmjdNbyRNOhCQhW6DuHztSFIduYpUwNfP-jsbU7RdSfN6_f-HspzH9uVTgFuo4AX54j-mrX3Py5bVtKCyCBAyKmatoq-kfTdSnpF5SXylIF6vXt_ZK_QsBTnK8h-WDy50elLDvFb6REE7nIjX2PgzGPPzoeojLO7_W0CIkjhim-KkITDe5AbhKIPQYYTD-qsKbDpeJLPy1Rixf-YgTviFo1Sji1uhA8HQwyfzOeI22d_-wuwhh8F4fKvBwbRVEOC_xkIfF9pt8Is1jmFJdYVYXCnzd0j0JUcdIZKC-6Z6YWGYLViuivc_Tkd3dIRv69nA'}
-#   # headers2 = {'Authorization': requests.args.headers.get('Authorization')}
-#   # print(headers == headers2)
-#   response = requests.request("GET", url, headers=headers, data=payload,files=files)
-#   print('kevinss',response.text[0])
-#   return response.text[:]
+
+
 
 
 
 class callAPI:
   HandleFlaskerr(app)
-  app.register_blueprint(app2)
-
   # capability(app)
   # nelson(app)
   GormToNelson(app)

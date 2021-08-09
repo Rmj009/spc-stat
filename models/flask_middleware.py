@@ -3,9 +3,11 @@
 from werkzeug.wrappers import Request
 from flask.views import MethodView
 import json,os
-from flask import jsonify
+from flask import jsonify, render_template
 from flask.views import MethodView
 from itsdangerous import TimedJSONWebSignatureSerializer as TJSS
+import requests
+from flask_api import status
 
 
 
@@ -15,28 +17,55 @@ class printMiddleware(object):
 
     def __call__(self, environ, start_response):
         print('— — — — — — — — — —')
-        print('API called',self)
+        print('API called',self.app)
         print('— — — — — — — — — —')
         # not Flask request - from werkzeug.wrappers import Request
         request = Request(environ)
-        # auth_token = request.environ.get('DZ_TOKEN_PERMISSION')
-        print(f'Headerssss:',request.headers.get('Postman-Token'))
-        # print(f'Headerssss:',request.headers) # coz api have no header initially
-        # spcRequestHeader = request.headers.get(Headers)
-        print('path: {0}, url: {1}'.format(request.path, request.url))
-        # just do here everything what you need
-        if request.headers is None :
-            responses = jsonify(message = 'bad request')
-            responses.status_code = 400
-            return responses
-        else:
-            try:
-                request.args.get(os.getenv('DZ_TOKEN_PERMISSION'),headers = request.headers)
-                # print(str(flask_Request))
-            except Exception as err:
-                print(err)
-            return self.app(environ, start_response)
+        payload={}
+        files={}
+        try:
+            url = os.getenv('DZ_TOKEN_PERMISSION') #request.environ.get
+            headers = {'Authorization': request.headers.get('Authorization')} # coz api have no header initially
+            # print(headers)
+            # print('path: {0}, url: {1}'.format(request.path, request.url))
+            response = requests.request("GET", url, headers=headers, data=payload, files=files)
+            print('BUGGGGG',response.text)
+        except Exception as err:
+            print('MiddleWare Fault:',err)
+            return 400, status.HTTP_400_BAD_REQUEST
 
+        if (json.loads(response.text)['access'] != True):
+            print('kevinss',json.loads(response.text)['access'])
+            return 400, status.HTTP_400_BAD_REQUEST
+
+        # elif (json.loads(response.text)['message'] not in 'missing key in request header'):
+        #     print('kevinss',json.loads(response.text)['access'])
+        #     return 400, status.HTTP_400_BAD_REQUEST
+
+        # elif (json.loads(response.text)['message'] not in 'Unauthorized'):
+        #     print('unauthorized value')
+        #     return 401, status.HTTP_401_UNAUTHORIZED
+
+        else:
+            return self.app(environ, start_response)
+            
+        # if request.headers is None :
+        #     responses = jsonify(message = 'bad request')
+        #     responses.status_code = 400
+        #     return responses
+        
+        # else:
+        #     try:
+        #         pass
+        #         # print('kevinResponse`',response)
+        #         # print('path: {0}, url: {1}'.format(request.path, url))
+        #         # ans = response['access']
+        #         # print('ans,', ans)
+        #         # request.args.get(os.getenv('DZ_TOKEN_PERMISSION'),headers = request.headers)
+        #         # print(str(flask_Request))
+        #         return
+            
+        
     # def get(self):
     #     # 首先驗證token的確認性與效期，為了版面的簡潔並沒有做try，但實務上會建議做一下try except
     #     token_type, access_token = request.headers.get('Authorization').split(' ')

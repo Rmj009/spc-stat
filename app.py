@@ -1,12 +1,12 @@
 from logging import error
 import sys,os #,redis
 from os.path import abspath, dirname
-from flask import Flask, request
+from flask import Flask #, request
 from flask.json import jsonify
-from werkzeug.datastructures import Headers
+# from werkzeug.datastructures import Headers
 from werkzeug.wrappers import response
 from flask.views import View
-# import requests
+import requests
 import asyncio
 
 
@@ -20,7 +20,6 @@ import API as below
 """
 sys.path.insert(0, dirname(dirname(abspath(__file__))))
 from .api.root import app2    # Blueprint example
-from .api.docs import swaggerDOC
 # from .api.v1nelson import nelson
 # from .api.v1capability import capability
 from .api.nelsonNew import GormToNelson
@@ -40,22 +39,21 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.logger.debug('A value for debugging') #app.logger.error('An error occurred')
 
 # class BearerAuth_flask(object):
-#   @app.before_request
-#   def BearerAuth(token):
-#     if token != None:
-#       app.wsgi_app = printMiddleware(app.wsgi_app) # print API have called
-#     else:
-#       return token
-#   # print('before request started')
+
+  # if token != None:
+  #   app.wsgi_app = printMiddleware(app.wsgi_app) # print API have called
+  # else:
+  #   return token
+  # # print('before request started')
 #   # print('URL:{0}'.format(request.url))
 #   # print('---------------')
 #   # print(f'Headers:',request.headers)
 #   # print('---------------')
   
-  # print(type(request.headers))
-  # print(str(request.headers))
-  # print(request.form.get())
-# https://docs.python-requests.org/en/master/user/quickstart/#custom-headers
+#   print(type(request.headers))
+#   print(str(request.headers))
+#   print(request.form.get())
+# # https://docs.python-requests.org/en/master/user/quickstart/#custom-headers
   # if (routes != error) :{
 # url = 'https://dotzerotech-user-api.dotzero.app/v2/permission/app?name=spc'
 
@@ -77,12 +75,30 @@ app.logger.debug('A value for debugging') #app.logger.error('An error occurred')
 # app.add_url_rule('', view_func=as_view('/v1/capability-new'))
 
 
-class callAPI:
+
+
+@app.before_request
+def BearerAuth():
   app.wsgi_app = printMiddleware(app.wsgi_app)
+
+  return
+  
+  # url = "https://dotzerotech-user-api.dotzero.app/v2/permission/app?name=spc"
+#   payload={}
+#   files={}
+#   headers = { 'Authorization': 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6ImFlMDVlZmMyNTM2YjJjZTdjNTExZjRiMTcyN2I4NTkyYTc5ZWJiN2UiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiRFogQWRtaW4iLCJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYWxlcnQtaGVpZ2h0LTI1NzMwNCIsImF1ZCI6ImFsZXJ0LWhlaWdodC0yNTczMDQiLCJhdXRoX3RpbWUiOjE2Mjg0OTE0OTQsInVzZXJfaWQiOiIwVUt5S1MzVmw4ZTExc3VhWVFqdmYydWp6SXoxIiwic3ViIjoiMFVLeUtTM1ZsOGUxMXN1YVlRanZmMnVqekl6MSIsImlhdCI6MTYyODQ5MTQ5NCwiZXhwIjoxNjI4NDk1MDk0LCJlbWFpbCI6ImRldi5pb0Bkb3R6ZXJvLnRlY2giLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsiZGV2LmlvQGRvdHplcm8udGVjaCJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIiwidGVuYW50IjoiZ3JvdXAxLXQweXEwIn19.cnLNufXeQ1Fq60xBfvmuEZmjdNbyRNOhCQhW6DuHztSFIduYpUwNfP-jsbU7RdSfN6_f-HspzH9uVTgFuo4AX54j-mrX3Py5bVtKCyCBAyKmatoq-kfTdSnpF5SXylIF6vXt_ZK_QsBTnK8h-WDy50elLDvFb6REE7nIjX2PgzGPPzoeojLO7_W0CIkjhim-KkITDe5AbhKIPQYYTD-qsKbDpeJLPy1Rixf-YgTviFo1Sji1uhA8HQwyfzOeI22d_-wuwhh8F4fKvBwbRVEOC_xkIfF9pt8Is1jmFJdYVYXCnzd0j0JUcdIZKC-6Z6YWGYLViuivc_Tkd3dIRv69nA'}
+#   # headers2 = {'Authorization': requests.args.headers.get('Authorization')}
+#   # print(headers == headers2)
+#   response = requests.request("GET", url, headers=headers, data=payload,files=files)
+#   print('kevinss',response.text[0])
+#   return response.text[:]
+
+
+
+class callAPI:
   HandleFlaskerr(app)
   app.register_blueprint(app2)
 
-  swaggerDOC(app)
   # capability(app)
   # nelson(app)
   GormToNelson(app)
@@ -90,7 +106,14 @@ class callAPI:
 
 
 loop = asyncio.get_event_loop()
+
 loop.run_until_complete(GormToNelson(app))
+
+loop2 = asyncio.get_event_loop()
+
+loop2.run_until_complete(GormToCPR(app))
+
+
 # @app.before_request
 # def before_request2():
 #     # print('before request started 2')
@@ -102,6 +125,7 @@ loop.run_until_complete(GormToNelson(app))
 #     # users = User.query.all()
 #     print(f'=========')
 #     return#, objects=users)
+
 
 
 # app.add_url_rule('/users/', view_func=ShowUsers.as_view('show_users'))
@@ -120,12 +144,12 @@ loop.run_until_complete(GormToNelson(app))
 
 @app.after_request
 def after_request(response):
-    print('after request finished')
-    print(request.url)
+    # print('after request finished')
+    # print(request.url)
     response.headers['key'] = 'value'
     # post_data = request.get_json()
     # print('PostData:',post_data)
-    print(response)
+    # print(response)
     return response
 
 # app.add_url_rule('/v1/capability-new', view_func=BearerAuth_flask.as_view('/v1/capability-new'))

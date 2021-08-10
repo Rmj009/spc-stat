@@ -3,14 +3,13 @@
 from werkzeug.wrappers import Request
 # from flask.views import MethodView
 import json,os
-from flask import jsonify, abort
+from flask import app, jsonify, abort, render_template
 from flask.views import MethodView
 # from itsdangerous import TimedJSONWebSignatureSerializer as TJSS
 import requests
 from flask_api import status
-
-
-
+from .errHandler import HandleFlaskerr
+HandleFlaskerr
 class printMiddleware(object):
     def __init__(self, app):
         self.app = app
@@ -19,48 +18,62 @@ class printMiddleware(object):
         print('— — — — — — — — — —')
         print('API called',self.app)
         print('— — — — — — — — — —')
-        # not Flask request - from werkzeug.wrappers import Request
-        request = Request(environ)
+        request = Request(environ) # not Flask request - from werkzeug.wrappers import Request
         payload={}
         files={}
         try:
             url = os.getenv('DZ_TOKEN_PERMISSION') #request.environ.get
             headers = {'Authorization': request.headers.get('Authorization')} # coz api have no header initially
             # print(headers)
-            # print('path: {0}, url: {1}'.format(request.path, request.url))
+            # print('path: {0}, url: {1} , endpoint:{2}'.format(request.path, request.url,request.endpoint))
             response = requests.request("GET", url, headers=headers, data=payload, files=files)
-            # print('BUGG',response.text)
-            # print('BUG2',response.status_code )
+            print('BUGG',response.text)
+            print('BUG2',response.status_code )
+            if (response.status_code ==  400):
+                print( json.loads(response.text)['message']) #message offer by dotzero API
+                # print('render_template('400.html)')
+                # return response.status_code
+                # return str(response.text),400
+                # return 400, status.HTTP_400_BAD_REQUEST
+                return render_template('400.html')
 
-        except Exception as err:
-            print('MiddleWare Fault:',err)
-            return abort(400)
-            # 400, status.HTTP_400_BAD_REQUEST
+            elif (response.status_code ==  401):
+                print(json.loads(response.text)['message']) #message offer by dotzero API
+                # print('render_template('401.html)')
+                return response.status_code
+                # return 400, status.HTTP_400_BAD_REQUEST
+                # return abort(401)
 
-        if (response.status_code !=  200):
-            pass
-        # (json.loads(response.text)['access'] != True):
-            # print('kevinss',json.loads(response.text)['access'])
-            return
+            elif (response.status_code ==  500):
+                print(json.loads(response.text)['message']) #message offer by dotzero API
+                # print('render_template('500.html)')
+                return '400'
+                # return 400, status.HTTP_400_BAD_REQUEST
+                # return abort(500)
+        
+            else:
+                # print()
+                # return response.status_code
+                return self.app(environ, start_response)
+        
+        except Exception as error:
+                print('MiddleWare Fault:',error)
+                # abort(400)
+                # return 500, status.HTTP_500_INTERNAL_SERVER_ERROR
 
-        elif (response.status_code ==  400):
-            print( json.loads(response.text)['message']) #message offer by dotzero API
-            print('render_templates(400.html)')
-            return abort(400)
+    
 
-        elif (response.status_code ==  401):
-            print(json.loads(response.text)['message']) #message offer by dotzero API
-            print('render_templates(401.html)') 
-            return abort(401)
-
-        elif (response.status_code ==  500):
-            print(json.loads(response.text)['message']) #message offer by dotzero API
-            print('render_templates(500.html)') 
-            return abort(500)
         
 
-        else:
-            return self.app(environ, start_response)
+            
+
+        # if (response.status_code !=  200):
+        #     pass
+        # # (json.loads(response.text)['access'] != True):
+        #     # print('kevinss',json.loads(response.text)['access'])
+        #     return
+
+        
         
         # else:
         #     if (json.loads(response.text)['message'] not in 'missing key in request header') or (json.loads(response.text)['access'] != True):
@@ -181,5 +194,4 @@ class printMiddleware(object):
 #         self.assertTrue(data['status'] == 'fail')
 #         self.assertTrue(data['message'] == 'Token blacklisted. Please log in again.')
 #         self.assertEqual(response.status_code, 401)
-
 

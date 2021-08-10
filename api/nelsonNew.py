@@ -4,7 +4,7 @@ from ..utils.gauge import Gauge
 from ..auth.security import validate_request
 # from ..models.nelsonNew import nelsonNew
 
-async def GormToNelson(app):
+def GormToNelson(app):
     @app.route("/v1/nelson-new", methods=['GET'])
     def NelsonAPI(
         authentication: bool = Depends(validate_request)

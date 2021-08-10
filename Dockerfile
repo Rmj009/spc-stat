@@ -8,6 +8,6 @@ RUN pip install -r requirements.txt
 COPY . .
 ENV PG_URL='postgresql://postgres:edge9527@host.docker.internal:5432/dev_tenant'
 ENV PORT=5000
-ENV PATH="FLASK_APP/"
+# ENV PATH="FLASK_APP/"
 EXPOSE 5000
-CMD ["flask","run"]
+CMD ["python", "-m", "flask", "run"]

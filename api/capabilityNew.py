@@ -1,7 +1,7 @@
 from flask import request
 from ..utils.gauge import Gauge
 
-def GormToCPR(app):
+async def GormToCPR(app):
     @app.route("/v1/capability-new", methods=['GET'])
     def CPR():
         points = request.args.get('points')

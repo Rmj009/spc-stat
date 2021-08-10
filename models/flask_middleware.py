@@ -1,11 +1,11 @@
 # from flask import Request
 # from werkzeug.datastructures import Headers
 from werkzeug.wrappers import Request
-from flask.views import MethodView
+# from flask.views import MethodView
 import json,os
-from flask import jsonify, render_template
+from flask import jsonify, abort
 from flask.views import MethodView
-from itsdangerous import TimedJSONWebSignatureSerializer as TJSS
+# from itsdangerous import TimedJSONWebSignatureSerializer as TJSS
 import requests
 from flask_api import status
 
@@ -29,26 +29,50 @@ class printMiddleware(object):
             # print(headers)
             # print('path: {0}, url: {1}'.format(request.path, request.url))
             response = requests.request("GET", url, headers=headers, data=payload, files=files)
-            print('BUGGGGG',response.text)
+            # print('BUGG',response.text)
+            # print('BUG2',response.status_code )
+
         except Exception as err:
             print('MiddleWare Fault:',err)
-            return 400, status.HTTP_400_BAD_REQUEST
+            return abort(400)
+            # 400, status.HTTP_400_BAD_REQUEST
 
-        if (json.loads(response.text)['access'] != True):
-            print('kevinss',json.loads(response.text)['access'])
-            return 400, status.HTTP_400_BAD_REQUEST
+        if (response.status_code !=  200):
+            pass
+        # (json.loads(response.text)['access'] != True):
+            # print('kevinss',json.loads(response.text)['access'])
+            return
 
-        # elif (json.loads(response.text)['message'] not in 'missing key in request header'):
-        #     print('kevinss',json.loads(response.text)['access'])
-        #     return 400, status.HTTP_400_BAD_REQUEST
+        elif (response.status_code ==  400):
+            print( json.loads(response.text)['message']) #message offer by dotzero API
+            print('render_templates(400.html)')
+            return abort(400)
 
-        # elif (json.loads(response.text)['message'] not in 'Unauthorized'):
-        #     print('unauthorized value')
-        #     return 401, status.HTTP_401_UNAUTHORIZED
+        elif (response.status_code ==  401):
+            print(json.loads(response.text)['message']) #message offer by dotzero API
+            print('render_templates(401.html)') 
+            return abort(401)
+
+        elif (response.status_code ==  500):
+            print(json.loads(response.text)['message']) #message offer by dotzero API
+            print('render_templates(500.html)') 
+            return abort(500)
+        
 
         else:
             return self.app(environ, start_response)
-            
+        
+        # else:
+        #     if (json.loads(response.text)['message'] not in 'missing key in request header') or (json.loads(response.text)['access'] != True):
+        #         print('kevinss',json.loads(response.text)['access'])
+        #         return abort(400)
+        #     # return 400, status.HTTP_400_BAD_REQUEST
+
+        #     elif (json.loads(response.text)['message'] not in 'Unauthorized') or (json.loads(response.text)['access'] != True):
+        #         print('unauthorized value')
+        #         return abort(401)
+        #     # return 401, status.HTTP_401_UNAUTHORIZED
+           
         # if request.headers is None :
         #     responses = jsonify(message = 'bad request')
         #     responses.status_code = 400
@@ -79,18 +103,18 @@ class printMiddleware(object):
 
 # app.config['SECRET_KEY'] = 'ABCDEFhijklm'
 
-class AuthorToken(MethodView):
-    def post(self):
-        # 產生token，有效期設置為3600秒
-        s = TJSS( expires_in=3600)
-        token = s.dumps({}).decode('utf-8')
-        # 回傳符合RFC 6750的格式
-        response = jsonify({
-            'access_token': token,
-            'token_type': 'Bearer',
-            'expires_in': 3600
-        })
-        return response
+# class AuthorToken(MethodView):
+#     def post(self):
+#         # 產生token，有效期設置為3600秒
+#         s = TJSS( expires_in=3600)
+#         token = s.dumps({}).decode('utf-8')
+#         # 回傳符合RFC 6750的格式
+#         response = jsonify({
+#             'access_token': token,
+#             'token_type': 'Bearer',
+#             'expires_in': 3600
+#         })
+#         return response
 
 
 # class FakeSource(MethodView):

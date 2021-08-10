@@ -1,4 +1,4 @@
-from flask import Blueprint,g
+from flask import render_template, Blueprint, g
 
 app2 = Blueprint('app2', __name__, static_folder='/static')
 
@@ -15,3 +15,9 @@ def home():
 @app2.route('/app2')
 def show():
   return "Hello Blueprint app2"
+
+
+@app2.route('/api-docs/')
+def get_docs():
+    print('SHOW SWAGGER')
+    return render_template('swaggerui.html')

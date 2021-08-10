@@ -1,7 +1,7 @@
 from logging import error
 import sys,os #,redis
 from os.path import abspath, dirname
-from flask import Flask ,request
+from flask import Flask ,request, abort
 from flask.json import jsonify
 # from werkzeug.datastructures import Headers
 from werkzeug.wrappers import response
@@ -109,16 +109,13 @@ app.register_blueprint(app2)
 #     # abort(400)
 #     return 400, status.HTTP_400_BAD_REQUEST
 
+# def mock_request(app):
 
+#   @app.before_request
+#   def BearerAuth(app):
+#     app.wsgi_app = printMiddleware(app.wsgi_app)
 
-
-
-
-@app.before_request
-def BearerAuth():
-  app.wsgi_app = printMiddleware(app.wsgi_app)
-
-  return
+#     return
 
 
 
@@ -128,6 +125,7 @@ class callAPI:
   HandleFlaskerr(app)
   # capability(app)
   # nelson(app)
+  # app.wsgi_app = printMiddleware(app.wsgi_app)
   GormToNelson(app)
   GormToCPR(app)
 

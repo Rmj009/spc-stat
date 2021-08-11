@@ -1,13 +1,14 @@
 from logging import error
 import sys,os #,redis
 from os.path import abspath, dirname
-from flask import Flask ,request, abort, render_template ,Blueprint
+from flask import Flask ,request, abort, render_template ,Blueprint,redirect
 from flask.json import jsonify
+
 # from werkzeug.datastructures import Headers
 # from werkzeug.wrappers import response
 from flask.views import View
-import requests
-import asyncio
+import requests, asyncio
+
 
 
 # from flask_oauth import OAuth
@@ -100,7 +101,6 @@ app.register_blueprint(app2)
 
 
 import requests
-import asyncio
 # from flask_api import status
 
 async def async_check_auth(AuthorizationToken):
@@ -128,11 +128,18 @@ async def async_check_auth(AuthorizationToken):
     return False
 
 @app.before_request
-@app.errorhandler(400)
 def auth():
-  header = request.headers
+  # run_analytics = True
+  # if request.endpoint in app.view_functions:
+  #       view_func = app.view_functions[request.endpoint]
+  #       run_analytics = not hasattr(view_func, '_exclude_from_analytics')
+  # print(request.path, run_analytics)
+  
   # print('mmmm\n',header)
+  # if 'logged_in' not in session and request.endpoint != 'login':
+  #   return redirect(url_for('login'))
   try:
+    header = request.headers
     AuthorizationToken =  header['Authorization']
   except Exception as eee:
     return render_template('400.html'), 400
@@ -140,6 +147,7 @@ def auth():
   
   if is_auth is not True:
     return render_template('401.html'), 401
+  
 
 # @app.errorhandler(404)
 # def page_not_found(error):

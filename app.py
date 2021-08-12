@@ -1,40 +1,33 @@
 from logging import error
+import re
 import sys,os #,redis
 from os.path import abspath, dirname
 from flask import url_for, session,request, abort, render_template ,redirect, g
 from flask.json import jsonify
-
 # from werkzeug.datastructures import Headers
 # from werkzeug.wrappers import response
 from flask.views import View
 import requests, asyncio
 # from flask_api import status
-
-
-
 # from flask_oauth import OAuth
 # from flask_cors import CORS
 # from flask_oauthlib.provider import OAuth2Provider
 # https://pythonhosted.org/Flask-OAuth/
 
 """
-import API as below
+Internal import as below
 """
 sys.path.insert(0, dirname(dirname(abspath(__file__))))
-# from .__init__ import *
-
-from flask import Flask
-from api.routes import errHandler
-app = Flask(__name__, static_url_path='/static') #static_folder=''
-app.config["DEBUG"] = True
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.logger.debug('Debugging') #app.logger.error('An error occurred')
-errHandler.HandleFlaskerr(app)
-from api.root import app2, show    # Blueprint example
+from .__init__ import *
+# from __init__ import *
+from .api.root import app2, show    # Blueprint example
+# from api.root import app2, show    # Blueprint example
 # from .api.v1nelson import nelson
 # from .api.v1capability import capability
-from api.nelsonNew import GormToNelson
-from api.capabilityNew import GormToCPR
+from .api.nelsonNew import GormToNelson
+from .api.capabilityNew import GormToCPR
+# from api.nelsonNew import GormToNelson
+# from api.capabilityNew import GormToCPR
 # from api.routes.flask_middleware import printMiddleware
 
 #######################################################
@@ -57,40 +50,8 @@ class callAPI:
     
     show_API_request(GormToCPR(app))
 
-
-
-
 # app.wsgi_app = printMiddleware(app.wsgi_app)
 # status_code = printMiddleware(app.wsgi_app)
-
-# class BearerAuth_flask(object):
-
-  # if token != None:
-  #   app.wsgi_app = printMiddleware(app.wsgi_app) # print API have called
-  # else:
-  #   return token
-  # # print('before request started')
-#   # print('URL:{0}'.format(request.url))
-#   # print('---------------')
-#   # print(f'Headers:',request.headers)
-#   # print('---------------')
-  
-#   print(type(request.headers))
-#   print(str(request.headers))
-#   print(request.form.get())
-# # https://docs.python-requests.org/en/master/user/quickstart/#custom-headers
-  # if (routes != error) :{
-# url = 'https://dotzerotech-user-api.dotzero.app/v2/permission/app?name=spc'
-
-# headers = {'Authorization': 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6ImM1MzYyNGFmMTYwMGRhNzlmMzFmMDMxNGYyMDVkNGYzN2FkNmUyNDYiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiRFogQWRtaW4iLCJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYWxlcnQtaGVpZ2h0LTI1NzMwNCIsImF1ZCI6ImFsZXJ0LWhlaWdodC0yNTczMDQiLCJhdXRoX3RpbWUiOjE2Mjc5ODI5ODIsInVzZXJfaWQiOiJiT2hlQlY2aDFQTjRTbG9wc2g0N1RneFZtWHYxIiwic3ViIjoiYk9oZUJWNmgxUE40U2xvcHNoNDdUZ3hWbVh2MSIsImlhdCI6MTYyNzk4Mjk4MiwiZXhwIjoxNjI3OTg2NTgyLCJlbWFpbCI6ImRldi5pb0Bkb3R6ZXJvLnRlY2giLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsiZGV2LmlvQGRvdHplcm8udGVjaCJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIiwidGVuYW50IjoiZXh0ZW5kLWZvcm1pbmctaWlucW0ifX0.XgJS9gHCF7yT0EmS8yyOPRUfjZ9DafJYMJt6hqG6JaYXlMPL_BL-EsSYEHEGVjeV_C8M0bOcAyN19YCxJZ-011iFu-UOa8j_O6JKiodRS1FVgb53BZcu8yHw0IVF7KdM4ucpxL7f-KYp_Y7_0NbEfnltUcqWAFRkJFQjkiOPGHhQVy9ABUIJK7GJyftU4Y_G4Po386fteydVR0ouYzM1kRwXmEbElwyjrAhItfzjl4TnbeyX2xHeZPpsLlw1rUDhmo7iGIeSmq3e6o1V6B-kl7K6OpmQgHOf6CHntNFvNMD_vjmOq4OptKB01mDOa3hmg8TWDZ7RrQXbCvP7abjqmA'}
-# r = requests.get(url, headers=headers)
-# # https://docs.python-requests.org/en/master/
-
-  # }
-  # else:
-    # abort request(400)
-  
-
 
 # 1. Get request header token: [SPC] request.header = xxx
 # 2. Build user api (https://dotzerotech-user-api.dotzero.app/v2/permission/app?name=spc) request with auth token in header
@@ -98,7 +59,6 @@ class callAPI:
 # not ok: abort()
 
 # app.add_url_rule('', view_func=as_view('/v1/capability-new'))
-
 
 def token_required(f):
     @wraps(f)
@@ -119,7 +79,6 @@ def token_required(f):
         return f(*args, **kwargs)
 
     return decorated
-
 
 
 async def async_check_auth(AuthorizationToken):
@@ -152,6 +111,7 @@ def auth():
   print(session.get(key='nelson-new'))
   print('path: {0}, url: {1} , endpoint:{2}'.format(request.path, request.url,request.endpoint))
   header = request.headers
+  endpoint = request.endpoint
   if "Authorization" in header: 
       print("header auth yes")
       AuthorizationToken =  header['Authorization']
@@ -161,17 +121,24 @@ def auth():
       else:
           # app.register_blueprint(app2)
         return 
-  else:
-    print("header auth no")
-    print(" request.url ",  request.url )
+  elif ("Authorization" not in header) and ('app2' or 'static' in endpoint):
+    print("requestendpoint",endpoint)
+    # print("Nelson API or Capability API without BearerAuth", request.endpoint)
+    # return render_template('401.html'), 401
     return
-    # if request.url == 'NelsonAPI' or 'CPR':
-    #     print("no auth 1")
-    #     return render_template('401.html'), 401
-    # else:
-    #   print("no auth 2")
-    #   print("FreeAuth")
-    #   return 
+
+  elif ("Authorization" not in header) and ('CPR' or 'NelsonNew' in endpoint):
+    print("requestendpoint",endpoint)
+    print("Nelson API or Capability API without BearerAuth", request.endpoint)
+    return render_template('401.html'), 401
+    # return
+
+
+  else:
+    print("NO AUTH header\n")
+    print(" request.url ",  request.url )
+    return render_template('401.html'), 401
+    # return
 
 
   # try:
@@ -202,18 +169,6 @@ def auth():
   #   print("FreeAuth")
   #   return
 
-# @app.errorhandler(404)
-# def page_not_found(error):
-#   return render_template('404.html'), 404
-
-# def mock_request(app):
-
-#   @app.before_request
-#   def BearerAuth(app):
-#     app.wsgi_app = printMiddleware(app.wsgi_app)
-
-#     return
-
 
 # flask request
 # print('path: {0}, url: {1} , endpoint:{2}'.format(request.path, request.url,request.endpoint))
@@ -241,50 +196,9 @@ def auth():
 
 
 
-# app.add_url_rule('/users/', view_func=ShowUsers.as_view('show_users'))
-
-# oauth = OAuth()
-# def get_hit_count():
-#     retries = 5
-#     while True:
-#         try:
-#             return cache.incr('hits')
-#         except redis.exceptions.ConnectionError as exc:
-#             if retries == 0:
-#                 raise exc
-#             retries -= 1
-#             time.sleep(0.5)
-
-
-
-# try:
-  
-# except Exception as aaa:
-#   print(aaa)
-
-
-#   if request.endpoint == 'app.get_docs':
-#         return redirect(url_for('get_docs'))
-#   elif 'get_docs' in session:
-#     return redirect(url_for('get_docs'))
-
-#   print('after request finished')
-#   print(request.url)
-#   response.headers['key'] = 'value'
-#   post_data = request.get_json()
-#   print('PostData:',post_data)
-
-#   print(response)
-#   return
-
-# app.add_url_rule('/v1/capability-new', view_func=BearerAuth_flask.as_view('/v1/capability-new'))
-# app.add_url_rule('/cap/', view_func=SPC_statistics.as_view('show_users'))
-
-
-# app.wsgi_app = printMiddleware(app.wsgi_app)
 #-----------------ENTRANCE-----------------------
 if __name__ == "__main__":
-  app.run(host="0.0.0.0", debug=False, port="5000")
+  app.run(host=os.getenv('HOST'), debug=True, port=os.getenv('PORT'),load_dotenv=True)
 
 
 

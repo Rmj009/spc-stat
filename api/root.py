@@ -1,4 +1,4 @@
-from flask import render_template, Blueprint, g
+from flask import request, render_template, Blueprint, g
 
 app2 = Blueprint('app2', __name__, static_folder='/static')
 
@@ -24,7 +24,7 @@ def get_docs():
 
 @app2.route('/', methods=['GET'])
 def home():
-  g.name = "Authorization"
+  g.name = "HOME"
 #   count = get_hit_count()
   # return ('API ok! Counting {} times.\n').format(count)
   return '{0}'.format(g.name),200
@@ -39,3 +39,10 @@ def show():
   return "Hello Blueprint app2"
 
 
+@app2.route('/front', methods=['GET','POST'])
+def index():
+  if request.method == "GET":
+    try: 
+      return render_template('index2.html', title="spc_show", name = 'new_plot', url ='/static/Nelson65.png')
+    except Exception as e:
+      print('type of:\n',type(e),e)

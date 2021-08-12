@@ -1,5 +1,6 @@
 from flask import request
-from utils.gauge import Gauge
+from ..utils.gauge import Gauge
+# from utils.gauge import Gauge
 
 def GormToCPR(app):
     @app.route("/v1/capability-new", methods=['GET'])

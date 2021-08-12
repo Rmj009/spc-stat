@@ -1,7 +1,7 @@
 from logging import error
 import sys,os #,redis
 from os.path import abspath, dirname
-from flask import url_for, session,request, abort, render_template ,redirect
+from flask import url_for, session,request, abort, render_template ,redirect, g
 from flask.json import jsonify
 
 # from werkzeug.datastructures import Headers
@@ -21,21 +21,28 @@ import requests, asyncio
 import API as below
 """
 sys.path.insert(0, dirname(dirname(abspath(__file__))))
-from .__init__ import *
-from .api.root import app2, show    # Blueprint example
+# from .__init__ import *
+
+from flask import Flask
+from api.routes import errHandler
+app = Flask(__name__, static_url_path='/static') #static_folder=''
+app.config["DEBUG"] = True
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.logger.debug('Debugging') #app.logger.error('An error occurred')
+errHandler.HandleFlaskerr(app)
+from api.root import app2, show    # Blueprint example
 # from .api.v1nelson import nelson
 # from .api.v1capability import capability
-from .api.nelsonNew import GormToNelson
-from .api.capabilityNew import GormToCPR
-from .api.routes.flask_middleware import printMiddleware
+from api.nelsonNew import GormToNelson
+from api.capabilityNew import GormToCPR
+# from api.routes.flask_middleware import printMiddleware
 
-print(os.getenv('HOST'))
 #######################################################
  #########  spc-backend-statistics START   ###########
 #######################################################
 
 
-# app.register_blueprint(app2)
+app.register_blueprint(app2)
 def show_API_request(object):
     # format = request.args.get('format')
     print('path: {0}, url: {1} , endpoint:{2}'.format(request.path, request.url,request.endpoint))
@@ -144,29 +151,56 @@ def auth():
   
   print(session.get(key='nelson-new'))
   print('path: {0}, url: {1} , endpoint:{2}'.format(request.path, request.url,request.endpoint))
-  try:
-    header = request.headers
-    AuthorizationToken =  header['Authorization']
-  except AssertionError:
-    # app.register_blueprint(app2)
-    return
-  except Exception as eee:
-    print(eee)
-    return render_template('400.html'), 400
-
-  if request.endpoint == 'NelsonAPI' or 'CPR':
-    is_auth = asyncio.run(async_check_auth(AuthorizationToken))
-    if is_auth != True:
-      return render_template('401.html'), 401
-
-    else:
-      # app.register_blueprint(app2)
-      
-      return 
-
+  header = request.headers
+  if "Authorization" in header: 
+      print("header auth yes")
+      AuthorizationToken =  header['Authorization']
+      is_auth = asyncio.run(async_check_auth(AuthorizationToken))
+      if is_auth != True:
+        return render_template('401.html'), 401
+      else:
+          # app.register_blueprint(app2)
+        return 
   else:
-    print("FreeAuth")
+    print("header auth no")
+    print(" request.url ",  request.url )
     return
+    # if request.url == 'NelsonAPI' or 'CPR':
+    #     print("no auth 1")
+    #     return render_template('401.html'), 401
+    # else:
+    #   print("no auth 2")
+    #   print("FreeAuth")
+    #   return 
+
+
+  # try:
+  #   print("try: lol...")
+  #   # check header auth is exist or not 
+  #   #  1. x ----> endpoint (auth required) API ----> GGG 
+  #   #  2. x ----> endpoint (auth free) ----> 
+  #   AuthorizationToken =  header['Authorization']
+  # except AssertionError:
+  #   # app.register_blueprint(app2)
+  #   return
+  # except Exception as eee:
+  #   print("[Exception] lol...", eee)
+  #   return render_template('400.html'), 400
+  # print("endpoint[outside]: ", request)
+
+  # if request.endpoint == 'NelsonAPI' or 'CPR':
+  #   print("endpoint [yuting]: ", request)
+  #   is_auth = asyncio.run(async_check_auth(AuthorizationToken))
+  #   if is_auth != True:
+  #     return render_template('401.html'), 401
+
+  #   else:
+  #     # app.register_blueprint(app2)
+  #     return 
+
+  # else:
+  #   print("FreeAuth")
+  #   return
 
 # @app.errorhandler(404)
 # def page_not_found(error):
@@ -250,4 +284,8 @@ def auth():
 # app.wsgi_app = printMiddleware(app.wsgi_app)
 #-----------------ENTRANCE-----------------------
 if __name__ == "__main__":
-  app.run(host="0.0.0.0", debug=False, port=os.getenv('PORT'))
+  app.run(host="0.0.0.0", debug=False, port="5000")
+
+
+
+# flask run --host 0.0.0.0 --port 5000

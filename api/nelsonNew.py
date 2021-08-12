@@ -1,7 +1,7 @@
 from flask import request,render_template
 from fastapi import Depends
-from ..utils.gauge import Gauge
-from ..auth.security import validate_request
+from utils.gauge import Gauge
+# from ..auth.security import validate_request
 # from ..models.nelsonNew import nelsonNew
 
 import requests,os,asyncio
@@ -62,7 +62,7 @@ import requests,os,asyncio
 def GormToNelson(app):
     @app.route("/v1/nelson-new", methods=['GET'])
     def NelsonAPI(
-        authentication: bool = Depends(validate_request)
+        # authentication: bool = Depends(validate_request)
     ):
         points = request.args.get('points')
         try:

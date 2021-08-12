@@ -1,6 +1,6 @@
 # from utils.calculator import Calculator
 # from utils.nelsonRules import *
-from ..utils.nelsonRules import *
+from utils.nelsonRules import *
 import numpy as np
 
 

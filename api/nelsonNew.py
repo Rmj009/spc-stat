@@ -1,7 +1,7 @@
 from flask import request,render_template
 from fastapi import Depends
 # from utils.gauge import Gauge
-from ..utils.gauge import Gauge
+from utils.gauge import Gauge
 # from ..auth.security import validate_request
 # from ..models.nelsonNew import nelsonNew
 

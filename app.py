@@ -112,6 +112,9 @@ def auth():
   print('path: {0}, url: {1} , endpoint:{2}'.format(request.path, request.url,request.endpoint))
   header = request.headers
   endpoint = request.endpoint
+  print("///////////////////")
+  print('show',header,endpoint)
+  print("///////////////////")
   if "Authorization" in header: 
       print("header auth yes")
       AuthorizationToken =  header['Authorization']
@@ -121,18 +124,18 @@ def auth():
       else:
           # app.register_blueprint(app2)
         return 
+  
+  elif ("Authorization" not in header) and ('NelsonAPI'== endpoint or 'CPR'== endpoint):
+    print("requestendpoint",endpoint)
+    print("Nelson API or Capability API without BearerAuth", request.endpoint)
+    return render_template('401.html'), 401
+  
+  
   elif ("Authorization" not in header) and ('app2' or 'static' in endpoint):
     print("requestendpoint",endpoint)
     # print("Nelson API or Capability API without BearerAuth", request.endpoint)
     # return render_template('401.html'), 401
     return
-
-  elif ("Authorization" not in header) and ('CPR' or 'NelsonNew' in endpoint):
-    print("requestendpoint",endpoint)
-    print("Nelson API or Capability API without BearerAuth", request.endpoint)
-    return render_template('401.html'), 401
-    # return
-
 
   else:
     print("NO AUTH header\n")

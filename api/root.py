@@ -43,6 +43,7 @@ def show():
 def index():
   if request.method == "GET":
     try: 
-      return render_template('index2.html', title="spc_show", name = 'new_plot', url ='/static/Nelson65.png')
+      # return render_template('index2.html', title="spc_show", name = 'new_plot', url ='/static/Nelson65.png')
+      return render_template('index2.html')
     except Exception as e:
       print('type of:\n',type(e),e)

@@ -1,13 +1,14 @@
 from logging import error
 import sys,os #,redis
 from os.path import abspath, dirname
-from flask import Flask ,request, abort, render_template ,Blueprint,redirect
+from flask import url_for, session,request, abort, render_template ,redirect
 from flask.json import jsonify
 
 # from werkzeug.datastructures import Headers
 # from werkzeug.wrappers import response
 from flask.views import View
 import requests, asyncio
+# from flask_api import status
 
 
 
@@ -21,47 +22,40 @@ import API as below
 """
 sys.path.insert(0, dirname(dirname(abspath(__file__))))
 from .__init__ import *
-from .api.root import app2    # Blueprint example
+from .api.root import app2, show    # Blueprint example
 # from .api.v1nelson import nelson
 # from .api.v1capability import capability
 from .api.nelsonNew import GormToNelson
 from .api.capabilityNew import GormToCPR
 from .api.routes.flask_middleware import printMiddleware
 
+print(os.getenv('HOST'))
 #######################################################
  #########  spc-backend-statistics START   ###########
 #######################################################
 
-app.register_blueprint(app2)
+
+# app.register_blueprint(app2)
+def show_API_request(object):
+    # format = request.args.get('format')
+    print('path: {0}, url: {1} , endpoint:{2}'.format(request.path, request.url,request.endpoint))
+    return
+
+class callAPI:
+  # capability(app)
+  # nelson(app)
+
+  with app.test_request_context():
+    GormToNelson(app)
+    
+    show_API_request(GormToCPR(app))
+
+
 
 
 # app.wsgi_app = printMiddleware(app.wsgi_app)
 # status_code = printMiddleware(app.wsgi_app)
-# print(status_code)
-# def flaskerrs():
-#   status_code = printMiddleware(app.wsgi_app)
-#   @app.errorhandler(404)
-#   def page_not_found(error):
-#     return render_template('page_not_found.html'), 404
-#   if (status_code ==  400):
-#       # print( json.loads(response.text)['message']) #message offer by dotzero API
-#       # print('render_template('400.html)')
-#       # return response.status_code
-#       # abort(400)
-#       return render_template('400.html')
-#       # return 400, status.HTTP_400_BAD_REQUEST
 
-#   elif (status_code ==  401):
-#       # print(json.loads(response.text)['message']) #message offer by dotzero API
-#       # print('render_template('401.html)')
-#       return render_template('400.html')
-#       # return 400, status.HTTP_400_BAD_REQUEST
-#       # return abort(401)
-
-#   elif (status_code ==  500):
-#       print(json.loads(response.text)['message']) #message offer by dotzero API
-#       # print('render_template('500.html)')
-#       return '400'
 # class BearerAuth_flask(object):
 
   # if token != None:
@@ -99,9 +93,27 @@ app.register_blueprint(app2)
 # app.add_url_rule('', view_func=as_view('/v1/capability-new'))
 
 
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
 
-import requests
-# from flask_api import status
+        token = None
+
+        if 'X-API-KEY' in request.headers:
+            token = request.headers['X-API-KEY']
+
+        if not token:
+            return {'message' : 'Token is missing.'}, 401
+
+        if token != 'mytoken':
+            return {'message' : 'Your token is wrong, wrong, wrong!!!'}, 401
+
+        print('TOKEN: {}'.format(token))
+        return f(*args, **kwargs)
+
+    return decorated
+
+
 
 async def async_check_auth(AuthorizationToken):
   url = os.getenv('DZ_TOKEN_PERMISSION')
@@ -110,7 +122,7 @@ async def async_check_auth(AuthorizationToken):
   response = requests.request("GET", url, headers=headers) #, data=payload, files=files)
   print('BUG2',response.status_code )
   json_text = response.json()
-  print(json_text)
+  print('JSONTEXT::::::::;',json_text)
   if (response.status_code == 400):
     return render_template('400.html'), 400
 
@@ -129,25 +141,32 @@ async def async_check_auth(AuthorizationToken):
 
 @app.before_request
 def auth():
-  # run_analytics = True
-  # if request.endpoint in app.view_functions:
-  #       view_func = app.view_functions[request.endpoint]
-  #       run_analytics = not hasattr(view_func, '_exclude_from_analytics')
-  # print(request.path, run_analytics)
   
-  # print('mmmm\n',header)
-  # if 'logged_in' not in session and request.endpoint != 'login':
-  #   return redirect(url_for('login'))
+  print(session.get(key='nelson-new'))
+  print('path: {0}, url: {1} , endpoint:{2}'.format(request.path, request.url,request.endpoint))
   try:
     header = request.headers
     AuthorizationToken =  header['Authorization']
+  except AssertionError:
+    # app.register_blueprint(app2)
+    return
   except Exception as eee:
+    print(eee)
     return render_template('400.html'), 400
-  is_auth = asyncio.run(async_check_auth(AuthorizationToken))
-  
-  if is_auth is not True:
-    return render_template('401.html'), 401
-  
+
+  if request.endpoint == 'NelsonAPI' or 'CPR':
+    is_auth = asyncio.run(async_check_auth(AuthorizationToken))
+    if is_auth != True:
+      return render_template('401.html'), 401
+
+    else:
+      # app.register_blueprint(app2)
+      
+      return 
+
+  else:
+    print("FreeAuth")
+    return
 
 # @app.errorhandler(404)
 # def page_not_found(error):
@@ -161,11 +180,7 @@ def auth():
 
 #     return
 
-class callAPI:
-  # capability(app)
-  # nelson(app)
-  GormToNelson(app)
-  GormToCPR(app)
+
 # flask request
 # print('path: {0}, url: {1} , endpoint:{2}'.format(request.path, request.url,request.endpoint))
 
@@ -206,15 +221,27 @@ class callAPI:
 #             retries -= 1
 #             time.sleep(0.5)
 
-# @app.after_request
-# # def after_request(response):
-#     # print('after request finished')
-#     # print(request.url)
-#     # response.headers['key'] = 'value'
-#     # post_data = request.get_json()
-#     # print('PostData:',post_data)
-#     print(response)
-#     # return response
+
+
+# try:
+  
+# except Exception as aaa:
+#   print(aaa)
+
+
+#   if request.endpoint == 'app.get_docs':
+#         return redirect(url_for('get_docs'))
+#   elif 'get_docs' in session:
+#     return redirect(url_for('get_docs'))
+
+#   print('after request finished')
+#   print(request.url)
+#   response.headers['key'] = 'value'
+#   post_data = request.get_json()
+#   print('PostData:',post_data)
+
+#   print(response)
+#   return
 
 # app.add_url_rule('/v1/capability-new', view_func=BearerAuth_flask.as_view('/v1/capability-new'))
 # app.add_url_rule('/cap/', view_func=SPC_statistics.as_view('show_users'))
@@ -223,4 +250,4 @@ class callAPI:
 # app.wsgi_app = printMiddleware(app.wsgi_app)
 #-----------------ENTRANCE-----------------------
 if __name__ == "__main__":
-  app.run(host=os.getenv('HOST'), debug=True, port=os.getenv('PORT'))
+  app.run(host="0.0.0.0", debug=False, port=os.getenv('PORT'))

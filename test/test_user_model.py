@@ -1,9 +1,19 @@
 import unittest
+# from ..app.server import db
+# from app.server.models import User
+# from ..app.tests.base import BaseTestCase
 
-# from project.server import db
-# from project.server.models import User
-# from project.tests.base import BaseTestCase
+from ..app import *
 
+from flask import request
+
+
+def generate_report():
+    # format = request.args.get('format')
+    print('path: {0}, url: {1} , endpoint:{2}'.format(request.path, request.url,request.endpoint))
+
+with app.test_request_context():
+    generate_report()
 
 # class TestUserModel(BaseTestCase):
 

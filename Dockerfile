@@ -10,4 +10,11 @@ ENV PG_URL='postgresql://postgres:edge9527@host.docker.internal:5432/dev_tenant'
 ENV PORT=5000
 ENV HOST=0.0.0.0
 EXPOSE 5000
-CMD ["python", "-m", "flask", "run"]
+CMD ["python", "app.py"]
+
+# FROM mcr.microsoft.com/appsvc/python:latest
+
+# ENV PORT 8080
+# EXPOSE 8080
+
+# ENTRYPOINT ["gunicorn", "--timeout", "600", "--bind", "=", "0.0.0.0:5000" ,"app:app"]

@@ -125,7 +125,7 @@ def auth():
           # app.register_blueprint(app2)
         return 
   
-  elif ("Authorization" not in header) and ('NelsonAPI'== endpoint or 'CPR'== endpoint):
+  elif ("Authorization" not in header) and (endpoint == 'NelsonAPI' or endpoint == 'CPR'):
     print("requestendpoint",endpoint)
     print("Nelson API or Capability API without BearerAuth", request.endpoint)
     return render_template('401.html'), 401
@@ -201,7 +201,7 @@ def auth():
 
 #-----------------ENTRANCE-----------------------
 if __name__ == "__main__":
-  app.run(host=os.getenv('HOST'), debug=True, port=os.getenv('PORT'),load_dotenv=True)
+  app.run(host=os.getenv('HOST'), debug=True, port=os.getenv('PORT') ) #,load_dotenv=True)
 
 
 

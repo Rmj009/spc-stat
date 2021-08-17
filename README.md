@@ -1,9 +1,23 @@
 ### docker build 
 ### docker run 
 
-- `POSTGRESQL_URL_CLOUD_TENANTL`
+## folder meant:
+- `api`
 
-  - 連線正式 **DB** 的 **URL**
+  - 集中所有API, 且分兩部份app與app2 , 兩者共用同個web framework flask, 前者app屬於後端運算, 後者app屬於前端
+
+- `static & templates`
+
+  - flask render html既定格式folder, 與css,img,js 相容
+
+- `swagger`
+
+  - swagger 測試用folder
+
+- `utils`
+
+  - 運算的核心,資料庫連接與查詢供給數據給統計製程指標包含 cpk/ppk等計算 
+
 
 - `POSTGRESQL_URL_LOCAL_TENANT`
 

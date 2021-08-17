@@ -4,6 +4,11 @@ from sqlalchemy.orm import sessionmaker
 from datetime import datetime
 import os
 
+"""
+intend to connect DB while declare the query table shown as below.
+"""
+
+
 db = SQLAlchemy() # db.init_app(app)
 # from sqlalchemy import text
 # from sqlalchemy.sql import text
@@ -16,7 +21,6 @@ Session = sessionmaker(bind=engine)
 # create a configured "Session" class
 session = Session() # create a Session
 connection = engine.connect()
-
 
 
 class spc_measure_point_config(db.Model): #Sojourn 1

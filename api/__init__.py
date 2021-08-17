@@ -10,3 +10,8 @@ print('After load_dotenv({})'.format( os.getenv('PG_URL')))
 # configs = dotenv_values(".env")
 # SECRET_KEY = os.environ.get("SECRET_KEY")
 # DATABASE_PASSWORD = os.environ.get("DATABASE_PASSWORD")
+
+
+"""
+initialize the .env params before api ready.
+"""

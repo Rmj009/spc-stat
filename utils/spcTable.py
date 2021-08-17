@@ -1,11 +1,14 @@
+from sqlalchemy import exc #, column, join,
+from sqlalchemy.orm import aliased
+from sqlalchemy.exc import DatabaseError
+"""
+Internal import as below
+"""
 from components.alchemy_db import * #spc_measure_point_config,spc_measure_point_history,work_order_op_history
 from utils.calculator import Calculator
 from utils.nelsonRules import *
 
-# from re import A
-from sqlalchemy import exc ,select #, column, join,
-from sqlalchemy.orm import aliased
-from sqlalchemy.exc import DatabaseError
+
 
 # from sqlalchemy.orm.query import QueryContext
 
@@ -111,11 +114,11 @@ class SpcTable:
             Tablequery = session.query(table_smph.value,table_opwh.good,table_opwh.defect,table_smpc.lsl,table_smpc.usl,table_smpc.measure_amount,table_smpc.std_value)\
             .join(table_smpc, table_smph.spc_measure_point_config_uuid == table_smpc.uuid)\
             .join(table_opwh, table_opwh.uuid == table_smph.work_order_op_history_uuid)
-            print('Tablequery',Tablequery)
+            # print('Tablequery',Tablequery)
             Wherequery = Tablequery.filter((table_opwh.start_time > startTime) & (table_opwh.end_time < endTime) & (table_smph.spc_measure_point_config_uuid == smpc_uuid))\
             .order_by(table_smph.work_order_op_history_uuid)\
             .order_by(table_smph.measure_object_id.asc())
-            print('Wherequery',Wherequery)
+            # print('Wherequery',Wherequery)
             if (wooh_uuid == None):
                 queryResult = [row for row in session.execute(Wherequery)]
             elif (len(wooh_uuid) == 0):

@@ -1,8 +1,24 @@
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import create_engine #select, column, join,
+from sqlalchemy.orm import sessionmaker
 from datetime import datetime
-db = SQLAlchemy()
+import os
+
+db = SQLAlchemy() # db.init_app(app)
 # from sqlalchemy import text
 # from sqlalchemy.sql import text
+
+# engine = create_engine('postgresql://postgres:edge9527@localhost:5432/dev_tenant')
+# print(os.getenv('PG_URL'))
+engine = create_engine(os.getenv('PG_URL'))
+
+Session = sessionmaker(bind=engine)
+# create a configured "Session" class
+session = Session() # create a Session
+connection = engine.connect()
+
+
+
 class spc_measure_point_config(db.Model): #Sojourn 1
     __tablename__='spc_measure_point_config'
     uuid = db.Column(

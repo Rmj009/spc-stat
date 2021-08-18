@@ -1,7 +1,11 @@
 ### docker build 
 ### docker run 
 
-## folder meant:
+## requirements
+- `pip install -r requirements.txt`
+  - install essential package
+
+## folder :
 - `api`
 
   - 集中所有API, 且分兩部份app與app2 , 兩者共用同個web framework flask, 前者app屬於後端運算, 後者app屬於前端
@@ -14,9 +18,17 @@
 
   - swagger 測試用folder
 
+- `components`
+
+  - For python orm 訂定定義表格並引入sqlalchemy
+
 - `utils`
 
   - 運算的核心,資料庫連接與查詢供給數據給統計製程指標包含 cpk/ppk等計算 
+
+- `test`
+
+  - 作為單元測試(尚未建制
 
 
 - `POSTGRESQL_URL_LOCAL_TENANT`

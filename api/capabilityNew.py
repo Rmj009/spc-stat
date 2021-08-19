@@ -1,4 +1,4 @@
-from flask import request
+from flask import request, abort
 from utils.gauge import Gauge
 # from utils.gauge import Gauge
 
@@ -39,7 +39,10 @@ def GormToCPR(app):
                 # CapabilityCol = ["points","goodlst","defectlst","lsllst","usllst","measureAmount","stdValue"]
                 # GormResults = dict(zip(CapabilityCol, GormResult))
                 result = Gauge.stats(points,goodlst,defectlst,lsllst,usllst,measureAmount,stdValue)
-                return result, 200
+                if ( result != None ):
+                    return result, 200
+                else:
+                    return abort(400)
         except Exception as errors:
             print('error',errors)
             return 'CalcFail', 500

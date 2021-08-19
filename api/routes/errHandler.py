@@ -2,7 +2,7 @@ from flask import render_template, make_response
 # from flask_sqlalchemy import SQLAlchemy
 # db = SQLAlchemy()
 
-def HandleFlaskerr(app):
+def HandleFlaskerr(app,error):
     @app.errorhandler(404)
     def not_found_error(error):
         return render_template('404.html'),error, 404

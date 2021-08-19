@@ -8,8 +8,10 @@ from flask.views import MethodView
 # from itsdangerous import TimedJSONWebSignatureSerializer as TJSS
 import requests
 from flask_api import status
-from .errHandler import HandleFlaskerr
-HandleFlaskerr
+from api.routes import errHandler
+errHandler.HandleFlaskerr(app)
+
+
 class printMiddleware(object):
     def __init__(self, app):
         self.app = app

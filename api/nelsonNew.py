@@ -1,10 +1,6 @@
-from flask import request,render_template
+from flask import request, abort
 from fastapi import Depends
 from utils.gauge import Gauge
-# from ..auth.security import validate_request
-# from ..models.nelsonNew import nelsonNew
-
-import requests,os,asyncio
 
 def GormToNelson(app):
     @app.route("/v1/nelson-new", methods=['GET'])
@@ -18,7 +14,10 @@ def GormToNelson(app):
                 return result, 400
             else:
                 result = Gauge.nelson(points)
-                return result, 200
+                if ( result != None ):
+                    return result, 200
+                else:
+                    return abort(400)
 
         except Exception as errors:
             print('SHOWerror',errors)

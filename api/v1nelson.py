@@ -1,5 +1,5 @@
 from utils.spcTable import SpcTable
-from flask import request
+from flask import request, abort
 
 def nelson(app):
     @app.route("/v1/nelson", methods=['GET'])
@@ -20,7 +20,10 @@ def nelson(app):
                 return result, 400
             else:
                 result = SpcTable.Nelsonfunc(beginTime=begin, finalTime=endtime, wuuid=wuuid, suuid=suuid)
-                return result, 200
+                if ( result != None ):
+                    return result, 200
+                else:
+                    return abort(400)
         except Exception as errors:
             print('error',errors)
             return 'Query Fail',errors, 500

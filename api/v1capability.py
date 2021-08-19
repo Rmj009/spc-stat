@@ -1,5 +1,5 @@
 from utils.spcTable import SpcTable
-from flask import request
+from flask import request, abort
 
 def capability(app):
     @app.route("/v1/capability", methods=['GET'])
@@ -20,6 +20,9 @@ def capability(app):
                 return result, 400
             else:
                 result = SpcTable.CPRfunc(beginTime=begin, finalTime=endtime, wuuid=wuuid, suuid=suuid)
-                return result, 200
+                if ( result != None ):
+                    return result, 200
+                else:
+                    return abort(400)
         except Exception as errors:
             return ' Failure %s:',errors, 500

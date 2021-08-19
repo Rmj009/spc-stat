@@ -1,6 +1,5 @@
 from utils.spcchart import SpcChart
-from flask import request
-
+from flask import request, abort
 
 """
 spchart.py API including:
@@ -18,7 +17,10 @@ def plotSPCchart(app):
       else:
         # result = Gauge.nelson(points)
         result = SpcChart(data = points)
-        return result, 200
+        if ( result != None ):
+          return result, 200
+        else:
+          return abort(400)
 
     except Exception as errors:
       print('SHOWerror',errors)

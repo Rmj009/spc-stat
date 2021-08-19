@@ -1,5 +1,5 @@
-### docker build 
-### docker run 
+#
+
 
 ## requirements
 - `pip install -r requirements.txt`
@@ -95,5 +95,9 @@
   -       .
   - `rule8 array`
 
-## [Change Log](CHANGELOG.md)
+## .env params
+- 
+-
+- explain .env
 
+export postman json file

@@ -1,4 +1,5 @@
-from flask import request, render_template, Blueprint, g
+from flask import request, abort, render_template, Blueprint, g
+from utils.nelsonRules2 import *
 
 app2 = Blueprint('app2', __name__, static_folder='/static')
 
@@ -52,14 +53,44 @@ def show():
   return "Hello Blueprint app2"
 
 
-@app2.route('/front', methods=['GET','POST'])
+@app2.route('/v1/front', methods=['GET','POST'])
 def index():
   if request.method == "GET":
-    try: 
-      # return render_template('index2.html', title="spc_show", name = 'new_plot', url ='/static/Nelson65.png')
-      return render_template('index2.html')
+    try:
+      points = request.args.get('points')
+      LSL = request.args.get('LSL')
+      USL = request.args.get('USL')
+      Target = request.args.get('Target')
+      try:
+        if (points == None) or (len(points) == 0):
+          result = 'PointsInvaild'
+          return result, 400
+        else:
+          NelsonRules2(points,LSL,USL,Target)
+          if ( True != None ):
+            return render_template('index2.html')
+            # return render_template('index2.html', title="spc_show", name = 'new_plot', url ='/static/Nelson65.png')
+          else:
+              return abort(400)
+
+      except Exception as errors:
+        print('SHOWerror',errors)
+        return 'CalcFail', 500
+
     except Exception as e:
       print('type of:\n',type(e),e)
+  
+  elif request.method == "POST":
+    return 'POST OK!' , 200
+
+
+
+  else:
+    abort(404)
+
+
+
+
 
 
 #------------CONFIGURATION--------------

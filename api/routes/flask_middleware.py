@@ -1,4 +1,3 @@
-# from flask import Request
 # from werkzeug.datastructures import Headers
 from werkzeug.wrappers import Request
 # from flask.views import MethodView
@@ -8,8 +7,8 @@ from flask.views import MethodView
 # from itsdangerous import TimedJSONWebSignatureSerializer as TJSS
 import requests
 from flask_api import status
-from api.routes import errHandler
-errHandler.HandleFlaskerr(app)
+
+
 
 
 class printMiddleware(object):

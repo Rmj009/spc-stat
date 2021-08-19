@@ -1,13 +1,16 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-# import seaborn as sns
 
-# df = pd.read_csv('workbook_name.csv', sep=',',header=0); nmp = df.to_numpy() ;data = nmp[:,11]#; data = pd.DataFrame(nmp[:,11])
+
 """
 REFERENCE:
-Douglas C. Montgomery-Introduction to statistical quality control 7th edtition-Wiley (2009)
+1. Douglas C. Montgomery-Introduction to statistical quality control 7th edtition-Wiley (2009)
 Part III chapter 5.3, p205.
+
+2. https://www.leansixsigmadefinition.com/glossary/nelson-rules/
+
+
 """
 
 def _sliding_chunker(original, segment_len, slide_len):

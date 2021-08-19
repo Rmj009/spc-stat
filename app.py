@@ -46,26 +46,6 @@ class callAPI:
 
 # app.add_url_rule('', view_func=as_view('/v1/capability-new'))
 
-def token_required(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-
-        token = None
-
-        if 'X-API-KEY' in request.headers:
-            token = request.headers['X-API-KEY']
-
-        if not token:
-            return {'message' : 'Token is missing.'}, 401
-
-        if token != 'mytoken':
-            return {'message' : 'Your token is wrong, wrong, wrong!!!'}, 401
-
-        print('TOKEN: {}'.format(token))
-        return f(*args, **kwargs)
-
-    return decorated
-
 
 async def async_check_auth(AuthorizationToken):
   url = os.getenv('DZ_TOKEN_PERMISSION')

@@ -1,6 +1,12 @@
 from flask import request, abort
 from utils.gauge import Gauge
-# from utils.gauge import Gauge
+
+"""
+statistical capbability indexes via func::Gauge( 7 inputs )
+7 inputs from user requests : ["points,goodlst,defectlst,lsllst,usllst,measureAmount,stdValue"]
+output: ["sigma","group-sigma","good","totalNum","goodRate","USL","LSL","UCL","LCL","overallMean","target","range","Cpu","Cpl","Cp","Ck","Cpk","Ppk"]
+
+"""
 
 def GormToCPR(app):
     @app.route("/v1/capability-new", methods=['GET'])

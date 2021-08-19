@@ -1,6 +1,15 @@
 from utils.spcTable import SpcTable
 from flask import request, abort
 
+
+"""
+Verify the input sequenes upon "Nelson Rules" via func::Nelsonfunc( 4 inputs shown as below) through DB
+4 inputs from user requests : (beginTime=begin, finalTime=endtime, wuuid=wuuid, suuid=suuid)
+output: Nelson Array[rule1~rule8] that represent whether or not the sequenes obey the rules
+For more detail pls refer to the utils.spcTable "Nelsonfunc"
+"""
+
+
 def nelson(app):
     @app.route("/v1/nelson", methods=['GET'])
     def v1nelson():

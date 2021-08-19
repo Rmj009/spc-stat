@@ -1,0 +1,633 @@
+{
+	"info": {
+		"_postman_id": "c92b710d-797b-414e-a440-92d9253c1ea0",
+		"name": "SPCtest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Capability",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/v1/capability?startTime=2019-02-01T16:26:46Z&endTime=2021-05-04T10:47:32Z&workOrderOpHistoryUUID=4134d124-ddb0-4ef4-91ba-922710ec7d65&spcMeasurePointConfigUUID=7202a1e7-346d-11eb-8118-3ee8fbec59ed",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"v1",
+						"capability"
+					],
+					"query": [
+						{
+							"key": "startTime",
+							"value": "2019-02-01T16:26:46Z"
+						},
+						{
+							"key": "endTime",
+							"value": "2021-05-04T10:47:32Z"
+						},
+						{
+							"key": "workOrderOpHistoryUUID",
+							"value": "4134d124-ddb0-4ef4-91ba-922710ec7d65"
+						},
+						{
+							"key": "spcMeasurePointConfigUUID",
+							"value": "7202a1e7-346d-11eb-8118-3ee8fbec59ed"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "nelson",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/v1/nelson?startTime=2019-02-01T16:26:46Z&endTime=2021-05-04T10:47:32Z&workOrderOpHistoryUUID=4134d124-ddb0-4ef4-91ba-922710ec7d65&spcMeasurePointConfigUUID=7202a1e7-346d-11eb-8118-3ee8fbec59ed",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"v1",
+						"nelson"
+					],
+					"query": [
+						{
+							"key": "startTime",
+							"value": "2019-02-01T16:26:46Z"
+						},
+						{
+							"key": "endTime",
+							"value": "2021-05-04T10:47:32Z"
+						},
+						{
+							"key": "workOrderOpHistoryUUID",
+							"value": "4134d124-ddb0-4ef4-91ba-922710ec7d65"
+						},
+						{
+							"key": "spcMeasurePointConfigUUID",
+							"value": "7202a1e7-346d-11eb-8118-3ee8fbec59ed"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "StagingCapability",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "https://spc-backend-statistics.staging9527.dotzero.tech/v1/capability?startTime=2019-02-01T16:26:46Z&endTime=2021-05-04T10:47:32Z&workOrderOpHistoryUUID=4134d124-ddb0-4ef4-91ba-922710ec7d65&spcMeasurePointConfigUUID=7202a1e7-346d-11eb-8118-3ee8fbec59ed",
+					"protocol": "https",
+					"host": [
+						"spc-backend-statistics",
+						"staging9527",
+						"dotzero",
+						"tech"
+					],
+					"path": [
+						"v1",
+						"capability"
+					],
+					"query": [
+						{
+							"key": "startTime",
+							"value": "2019-02-01T16:26:46Z"
+						},
+						{
+							"key": "endTime",
+							"value": "2021-05-04T10:47:32Z"
+						},
+						{
+							"key": "workOrderOpHistoryUUID",
+							"value": "4134d124-ddb0-4ef4-91ba-922710ec7d65"
+						},
+						{
+							"key": "spcMeasurePointConfigUUID",
+							"value": "7202a1e7-346d-11eb-8118-3ee8fbec59ed"
+						}
+					]
+				},
+				"description": "For stage deployment test"
+			},
+			"response": []
+		},
+		{
+			"name": "nelsonStaging",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://spc-backend-statistics.staging9527.dotzero.tech/v1/nelson?startTime=2019-02-01T16:26:46Z&endTime=2021-05-04T10:47:32Z&workOrderOpHistoryUUID=4134d124-ddb0-4ef4-91ba-922710ec7d65&spcMeasurePointConfigUUID=7202a1e7-346d-11eb-8118-3ee8fbec59ed",
+					"protocol": "https",
+					"host": [
+						"spc-backend-statistics",
+						"staging9527",
+						"dotzero",
+						"tech"
+					],
+					"path": [
+						"v1",
+						"nelson"
+					],
+					"query": [
+						{
+							"key": "startTime",
+							"value": "2019-02-01T16:26:46Z"
+						},
+						{
+							"key": "endTime",
+							"value": "2021-05-04T10:47:32Z"
+						},
+						{
+							"key": "workOrderOpHistoryUUID",
+							"value": "4134d124-ddb0-4ef4-91ba-922710ec7d65"
+						},
+						{
+							"key": "spcMeasurePointConfigUUID",
+							"value": "7202a1e7-346d-11eb-8118-3ee8fbec59ed"
+						}
+					]
+				},
+				"description": "Staging DevOps test"
+			},
+			"response": []
+		},
+		{
+			"name": "capability-new",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6ImFlMDVlZmMyNTM2YjJjZTdjNTExZjRiMTcyN2I4NTkyYTc5ZWJiN2UiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiRFogQWRtaW4iLCJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYWxlcnQtaGVpZ2h0LTI1NzMwNCIsImF1ZCI6ImFsZXJ0LWhlaWdodC0yNTczMDQiLCJhdXRoX3RpbWUiOjE2Mjg5MzEwMjcsInVzZXJfaWQiOiIwVUt5S1MzVmw4ZTExc3VhWVFqdmYydWp6SXoxIiwic3ViIjoiMFVLeUtTM1ZsOGUxMXN1YVlRanZmMnVqekl6MSIsImlhdCI6MTYyODkzMTAyNywiZXhwIjoxNjI4OTM0NjI3LCJlbWFpbCI6ImRldi5pb0Bkb3R6ZXJvLnRlY2giLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsiZGV2LmlvQGRvdHplcm8udGVjaCJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIiwidGVuYW50IjoiZ3JvdXAxLXQweXEwIn19.ZClC5vHIFb0-FrhlBb_5DrofLmhhASj5V1ii-8yQ-b36NDEsdaWES5Mi_179Qcl8Oj8PtyitdEfRnQG6VoUoH17-bd7kyInutsV3ACOANXkSxc9NKbP1j0_sBKJ7DRXJq1J3SSk2msEgYPv0iogyI7eORYctLzCbz9Qk6m6yKvapmbrOnpdPsB18sCOwD-oyVDn4vDicr-2llwvsIRJm8sWCVfx2hOWz0OgAZ9WKRl028lbeJkyopDHLGxHzCQMc31xNZODk7EnC0VbIHCaAnwNIYIzzLGdad2fLYmnXv9zhxwLS-y9r6QU3az5KFIams7mxDZtn86yqHvWxQyTY9w",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:5000/v1/capability-new?points=11,22,44,22,33,21,26,28,27,29&good=66&defect=2&LSL=4&USL=4&measureAmount=5&stdValue=20",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"v1",
+						"capability-new"
+					],
+					"query": [
+						{
+							"key": "points",
+							"value": "11,22,44,22,33,21,26,28,27,29"
+						},
+						{
+							"key": "good",
+							"value": "66"
+						},
+						{
+							"key": "defect",
+							"value": "2"
+						},
+						{
+							"key": "LSL",
+							"value": "4"
+						},
+						{
+							"key": "USL",
+							"value": "4"
+						},
+						{
+							"key": "measureAmount",
+							"value": "5"
+						},
+						{
+							"key": "stdValue",
+							"value": "20"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "nelson-new",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6ImFlMDVlZmMyNTM2YjJjZTdjNTExZjRiMTcyN2I4NTkyYTc5ZWJiN2UiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiRFogQWRtaW4iLCJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYWxlcnQtaGVpZ2h0LTI1NzMwNCIsImF1ZCI6ImFsZXJ0LWhlaWdodC0yNTczMDQiLCJhdXRoX3RpbWUiOjE2Mjg3MDc5NDIsInVzZXJfaWQiOiIwVUt5S1MzVmw4ZTExc3VhWVFqdmYydWp6SXoxIiwic3ViIjoiMFVLeUtTM1ZsOGUxMXN1YVlRanZmMnVqekl6MSIsImlhdCI6MTYyODcwNzk0MiwiZXhwIjoxNjI4NzExNTQyLCJlbWFpbCI6ImRldi5pb0Bkb3R6ZXJvLnRlY2giLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsiZGV2LmlvQGRvdHplcm8udGVjaCJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIiwidGVuYW50IjoiZ3JvdXAxLXQweXEwIn19.RLuEQSf-48drUqZBO5P7_vCgYvZ-vvjWTi4TrLUv9KCLFIYjNt2CuI0FqlKR7vLEBpHIpWSly1a9bJT9nNgp61Elm_jdZ4mtd_-b6BrC8mcIyZadtJdaqwgyiZREMoRg0V6WXcu1BNhGcu0YJJT316o1eFoMUqfUhDTO51oppp0X4JiemZLlWsxwZP8R8ZftydTiY-2amsHCtPWiQ12jKjrDzrngPjvOfhwkvRcyDKc6RfzP8C_oYVZTkf30pBcAvTLOs6moBd66j4CWWjK0jkeoBVzwGUD5Vmx5mx1-yrPyFRmlvvKMLlSHERltVh8hOHIsMJweNEVUh9GSqLI59A",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/v1/nelson-new?points=11,22,44,22,33,21,26,28,27,29,23,26,25,23,23,22,22,27",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"v1",
+						"nelson-new"
+					],
+					"query": [
+						{
+							"key": "points",
+							"value": "11,22,44,22,33,21,26,28,27,29,23,26,25,23,23,22,22,27"
+						},
+						{
+							"key": "good",
+							"value": "66",
+							"disabled": true
+						},
+						{
+							"key": "defect",
+							"value": "2",
+							"disabled": true
+						},
+						{
+							"key": "LSL",
+							"value": "4",
+							"disabled": true
+						},
+						{
+							"key": "USL",
+							"value": "4",
+							"disabled": true
+						},
+						{
+							"key": "measureAmount",
+							"value": "5",
+							"disabled": true
+						},
+						{
+							"key": "stdValue",
+							"value": "20",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Nelson-new_staging",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://spc-backend-statistics.staging9527.dotzero.tech/v1/nelson-new?points=11.33,22,44,22,33,21,26,28,27,29,23,26,25,23,23,22,22,27",
+					"protocol": "https",
+					"host": [
+						"spc-backend-statistics",
+						"staging9527",
+						"dotzero",
+						"tech"
+					],
+					"path": [
+						"v1",
+						"nelson-new"
+					],
+					"query": [
+						{
+							"key": "points",
+							"value": "11.33,22,44,22,33,21,26,28,27,29,23,26,25,23,23,22,22,27"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Capability-new_staging",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://spc-backend-statistics.staging9527.dotzero.tech/v1/capability-new?points=11.23,22.88,44,22,33,21,26,28,27,29&good=66&defect=2&LSL=4&USL=4&measureAmount=5&stdValue=20",
+					"protocol": "https",
+					"host": [
+						"spc-backend-statistics",
+						"staging9527",
+						"dotzero",
+						"tech"
+					],
+					"path": [
+						"v1",
+						"capability-new"
+					],
+					"query": [
+						{
+							"key": "points",
+							"value": "11.23,22.88,44,22,33,21,26,28,27,29"
+						},
+						{
+							"key": "good",
+							"value": "66"
+						},
+						{
+							"key": "defect",
+							"value": "2"
+						},
+						{
+							"key": "LSL",
+							"value": "4"
+						},
+						{
+							"key": "USL",
+							"value": "4"
+						},
+						{
+							"key": "measureAmount",
+							"value": "5"
+						},
+						{
+							"key": "stdValue",
+							"value": "20"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "capability-new_FASTAPI",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/v2/capability-new?points=11,22,44,22,33,21,26,28,27,29&good=66&defect=2&LSL=4&USL=4&measureAmount=5&stdValue=20",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"v2",
+						"capability-new"
+					],
+					"query": [
+						{
+							"key": "points",
+							"value": "11,22,44,22,33,21,26,28,27,29"
+						},
+						{
+							"key": "good",
+							"value": "66"
+						},
+						{
+							"key": "defect",
+							"value": "2"
+						},
+						{
+							"key": "LSL",
+							"value": "4"
+						},
+						{
+							"key": "USL",
+							"value": "4"
+						},
+						{
+							"key": "measureAmount",
+							"value": "5"
+						},
+						{
+							"key": "stdValue",
+							"value": "20"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "nelson-new_FASTAPI",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/v2/nelson-new?points=11,22,44,22,33,21,26,28,27,29,23,26,25,23,23,22,22,27",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"v2",
+						"nelson-new"
+					],
+					"query": [
+						{
+							"key": "points",
+							"value": "11,22,44,22,33,21,26,28,27,29,23,26,25,23,23,22,22,27"
+						},
+						{
+							"key": "good",
+							"value": "66",
+							"disabled": true
+						},
+						{
+							"key": "defect",
+							"value": "2",
+							"disabled": true
+						},
+						{
+							"key": "LSL",
+							"value": "4",
+							"disabled": true
+						},
+						{
+							"key": "USL",
+							"value": "4",
+							"disabled": true
+						},
+						{
+							"key": "measureAmount",
+							"value": "5",
+							"disabled": true
+						},
+						{
+							"key": "stdValue",
+							"value": "20",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "spcchart",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/v1/spchart?points=11,22,44,22,33,21,26,28,27,29,23,26,25,23,23,22,22,27",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"v1",
+						"spchart"
+					],
+					"query": [
+						{
+							"key": "points",
+							"value": "11,22,44,22,33,21,26,28,27,29,23,26,25,23,23,22,22,27"
+						},
+						{
+							"key": "good",
+							"value": "66",
+							"disabled": true
+						},
+						{
+							"key": "defect",
+							"value": "2",
+							"disabled": true
+						},
+						{
+							"key": "LSL",
+							"value": "4",
+							"disabled": true
+						},
+						{
+							"key": "USL",
+							"value": "4",
+							"disabled": true
+						},
+						{
+							"key": "measureAmount",
+							"value": "5",
+							"disabled": true
+						},
+						{
+							"key": "stdValue",
+							"value": "20",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "visit_Chris_dotzero",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://dotzerotech-user-api.dotzero.app/v2/permission/app?name=spc",
+					"protocol": "https",
+					"host": [
+						"dotzerotech-user-api",
+						"dotzero",
+						"app"
+					],
+					"path": [
+						"v2",
+						"permission",
+						"app"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "spc"
+						}
+					]
+				},
+				"description": "https://dotzerotech-user-api.dotzero.app/v2/permission/app?name=spc"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

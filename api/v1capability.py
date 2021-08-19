@@ -1,6 +1,13 @@
 from utils.spcTable import SpcTable
 from flask import request, abort
 
+"""
+statistical capbability indexes via func::CPRfunc( 7 inputs ) with Query RawData through func::SpcTable
+7 inputs from user requests : ["points,goodlst,defectlst,lsllst,usllst,measureAmount,stdValue"]
+output: ["sigma","group-sigma","good","totalNum","goodRate","USL","LSL","UCL","LCL","overallMean","target","range","Cpu","Cpl","Cp","Ck","Cpk","Ppk"]
+
+"""
+
 def capability(app):
     @app.route("/v1/capability", methods=['GET'])
     def v1capability(): # query params

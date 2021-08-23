@@ -1,4 +1,4 @@
-from utils.nelsonRules import *
+from utils.PlotnelsonRules import *
 import numpy as np
 
 

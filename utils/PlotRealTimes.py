@@ -1,14 +1,23 @@
-from nelsonRules import *
+from PlotnelsonRules import *
 import matplotlib.animation as animation
 from matplotlib.animation import FuncAnimation
 from matplotlib.lines import Line2D
-import time,os
+import time
+
+
+
+"""
+Plot the real-time timeseries
+(under built)
+"""
+
 
 class Scope:
     def __init__(self, ax, maxt=225, dt=2):
         self.ax = ax
         self.dt = dt
         self.maxt = maxt
+        # self.mean = np.mean([ax])
         self.tdata = [0]
         self.ydata = [0]
         self.line = Line2D(self.tdata, self.ydata)
@@ -16,7 +25,7 @@ class Scope:
         self.ax.set_ylim(0, 60)
         self.ax.set_xlim(0, self.maxt)
 
-    def update(self, y):
+    def update(self, mean, y,origin):
         lastt = self.tdata[-1]
         if lastt > self.tdata[0] + self.maxt:  # reset the arrays
             self.tdata = [self.tdata[-1]]
@@ -30,38 +39,41 @@ class Scope:
         self.line.set_data(self.tdata, self.ydata)
         # plot mean
         text_offset = 70
-        mean = np.mean(result[0])
-        sigma = np.std(result[0])
+        mean = np.mean(origin[0])
+        sigma = np.std(origin[0])
 
         ax.axhline(mean, color='r', linestyle='--', alpha=0.5)
-        ax.annotate('$\overline{x}$', xy=(len(result[0]), mean), textcoords=('offset points'),xytext=(text_offset, 0), fontsize=9)
+        ax.annotate('$\overline{x}$', xy=(len(origin[0]), mean), textcoords=('offset points'),xytext=(text_offset, 0), fontsize=9)
         sigma_range = np.arange(1,4)
         for i in range(len(sigma_range)):
             ax.axhline(mean + (sigma_range[i] * sigma), color='black', linestyle='-', alpha=(i+1)/10)
             ax.axhline(mean - (sigma_range[i] * sigma), color='black', linestyle='-', alpha=(i+1)/10)
-            ax.annotate('%s $\sigma$' % sigma_range[i], xy=(len(result[0]), mean + (sigma_range[i] * sigma)),
+            ax.annotate('%s $\sigma$' % sigma_range[i], xy=(len(origin[0]), mean + (sigma_range[i] * sigma)),
                         textcoords=('offset points'),
                         xytext=(text_offset, 0), fontsize=8)
             ax.annotate('-%s $\sigma$' % sigma_range[i],
-                        xy=(len(result[0]), mean - (sigma_range[i] * sigma)),
+                        xy=(len(origin[0]), mean - (sigma_range[i] * sigma)),
                         textcoords=('offset points'),
                         xytext=(text_offset, 0), fontsize=8)
         return self.line,        
 
 
 
-def drawchart(original):
+def drawchart(self, origin):
     """Plot RawData"""
-    # mean = np.mean(original)
-    # sigma = np.std(original)
+    text_offset = 70
+    mean = np.mean(self, origin[0])
+    sigma = np.std(self, origin[0])
+    # mean = np.mean(self, origin)
+    # sigma = np.std(self, origin)
     # print("###",[mean,sigma])
     fig = plt.figure(figsize=(20, 10))
     ax1 = fig.add_subplot(1, 1, 1)
-    ax1.plot(original, color='blue', linewidth=1.5)
+    ax1.plot(self, origin, color='blue', linewidth=1.5)
 
     # plot mean
     ax1.axhline(mean, color='r', linestyle='--', alpha=0.5)
-    ax1.annotate('$\overline{x}$', xy=(len(original), mean), textcoords=('offset points'),
+    ax1.annotate('$\overline{x}$', xy=(len(self, origin), mean), textcoords=('offset points'),
                 xytext=(text_offset, 0), fontsize=18)
 
     # plot 1-3 standard deviations
@@ -69,11 +81,11 @@ def drawchart(original):
     for i in range(len(sigma_range)):
         ax1.axhline(mean + (sigma_range[i] * sigma), color='black', linestyle='-', alpha=(i+1)/10)
         ax1.axhline(mean - (sigma_range[i] * sigma), color='black', linestyle='-', alpha=(i+1)/10)
-        ax1.annotate('%s $\sigma$' % sigma_range[i], xy=(len(original), mean + (sigma_range[i] * sigma)),
+        ax1.annotate('%s $\sigma$' % sigma_range[i], xy=(len(self, origin), mean + (sigma_range[i] * sigma)),
                     textcoords=('offset points'),
                     xytext=(text_offset, 0), fontsize=18)
         ax1.annotate('-%s $\sigma$' % sigma_range[i],
-                    xy=(len(original), mean - (sigma_range[i] * sigma)),
+                    xy=(len(self, origin), mean - (sigma_range[i] * sigma)),
                     textcoords=('offset points'),
                     xytext=(text_offset, 0), fontsize=18)
     # plt.show()
@@ -81,15 +93,11 @@ def drawchart(original):
     return
 
 
-text_offset = 70
-mean = np.mean(result[0])
-sigma = np.std(result[0])
-
-def emitter(object):
+def emitter(self,object):
     while True:
         for i in range(len(object[0])):
             time.sleep(0.001)
-            if (object[0][i] >= 2* mean):
+            if (object[0][i] >= 2* self.mean):
                 yield object[0][i]
                 print(f'System Pause because of out of boundary:',object[0][i])
                 time.sleep(100)
@@ -108,7 +116,7 @@ fig, ax = plt.subplots()
 
 
 # ax = fig.add_subplot(1, 1, 1)
-# ax.plot(result[0], color='blue', linewidth=1.5)
+# ax.plot(origin[0], color='blue', linewidth=1.5)
 
 
 # plot 1-3 standard deviations
@@ -118,6 +126,6 @@ fig, ax = plt.subplots()
 
 scope = Scope(ax)
 # pass a generator in "emitter" to produce data for the update func
-ani = animation.FuncAnimation(fig, scope.update, emitter(object=result), interval=50, blit=True)
+ani = animation.FuncAnimation(fig, scope.update, emitter(object), interval=50, blit=True)
 
 plt.show()

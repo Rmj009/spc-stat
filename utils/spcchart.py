@@ -6,7 +6,7 @@ from pygal.style import BlueStyle, DarkSolarizedStyle, DarkColorizedStyle, Clean
 from utils.spc import *
 
 """
-
+14 control chart including Xbar type, (p, np, c ,u), (EWMA, CUSUM), (three way, time series)
 """
 
 

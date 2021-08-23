@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 """
 Read csv Examples 
 # df = pd.read_csv('workbook_name.csv', sep=',',header=0); nmp = df.to_numpy() ;data = nmp[:,11]#; data = pd.DataFrame(nmp[:,11])
-1. entrypoint def(NelsonRules2) 
+1. entrypoint def(PlotNelsonRules2) 
 2. pipeline to assign_datum , check the rules by violations(restRule1~4)
 3. Draw the 3sigma (plotAxlines) and save fig in statics/img = 'static/nelson_chart.png'
 
@@ -102,7 +102,7 @@ def plotAxlines(array):
         plt.axhline(y=lower, linewidth=2, color=color)
     return
 
-def NelsonRules2(points,LSL,USL,Target):
+def NelsonRules2(points,Target,LSL,USL):
     # print(LSL,USL)
     points = [float(i) for i in points.split(',')]
     Target = float(Target)
@@ -218,8 +218,6 @@ def NelsonRules2(points,LSL,USL,Target):
     assign_datum(obj = (trendObj), datum = Target)
     # pd_trendObj = pd.DataFrame(trendObj) #, columns = [alphabets[name] for name in range(len(trendObj))], index = [i for i  in range(len(ptV)+1)] )
     print(',,,',[index for index,val in enumerate(trendObj['format_1']) if val])
-    # print(pd_trendObj)
-    # plt.plot(trendObj['all_vals'])
     mark = 12.5
     plt.figure(figsize=(30,18))
     plotAxlines(trendObj['all_vals'])

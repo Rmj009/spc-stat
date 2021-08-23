@@ -25,7 +25,7 @@ class Scope:
         self.ax.set_ylim(0, 60)
         self.ax.set_xlim(0, self.maxt)
 
-    def update(self, mean, y,origin):
+    def update(self, y,origin):
         lastt = self.tdata[-1]
         if lastt > self.tdata[0] + self.maxt:  # reset the arrays
             self.tdata = [self.tdata[-1]]

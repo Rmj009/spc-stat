@@ -17,10 +17,7 @@ from utils.PlotnelsonRules import *
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:edge9527@host.docker.internal:5432/dev_tenant'
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:edge9527@aaaaa:5432/dev_tenant'
 
-Definition of the table format
-1. spc_measure_point_config
-2. spc_measure_point_history
-
+### QUERY the timeseries values of each table via (startTime,endTime,wooh_uuid,smpc_uuid)
 user params input: 
 * spc_measure point config UUID, work order op history uuid
 * startTime 開工 

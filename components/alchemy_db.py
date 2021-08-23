@@ -6,6 +6,10 @@ import os
 
 """
 intend to connect DB while declare the query table shown as below.
+Definition of the table format
+1. spc_measure_point_config
+2. spc_measure_point_history
+3. work_order_op_history
 """
 
 

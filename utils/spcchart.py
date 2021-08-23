@@ -5,8 +5,11 @@ import pygal
 from pygal.style import BlueStyle, DarkSolarizedStyle, DarkColorizedStyle, CleanStyle
 from utils.spc import *
 
-# df = pd.read_csv('workbook_name.csv', sep=',',header=0)
-# data = df.to_numpy()[:,11]
+"""
+
+"""
+
+
 class SpcChart(object):
     def __init__(self, data, title=None, filename=None):
         self.data = data
@@ -17,6 +20,7 @@ class SpcChart(object):
         line_chart = pygal.Line(style=CleanStyle)
         line_chart.title = self.title
         mean, lcl, ucl = Spc(self.data, CHART_X_BAR_R_X).get_stats()
+        print('mean, lcl, ucl', mean, lcl, ucl)
 
         #line_chart.x_labels = map(str, range(2002, 2013))
         line_chart.add('UCL', [ucl for d in self.data])
@@ -30,4 +34,21 @@ class SpcChart(object):
     def render_to_svg(self):
         pass
 
+
+"""
+CHART_X_BAR_R_X = "Xbar R - X"
+CHART_X_BAR_R_R = "Xbar R - R"
+CHART_X_BAR_S_X = "Xbar S - X"
+CHART_X_BAR_S_S = "Xbar S - S"
+CHART_X_MR_X = "X mR - X"
+CHART_X_MR_MR = "X mR - mR"
+CHART_P = "p"
+CHART_NP = "np"
+CHART_C = "c"
+CHART_U = "u"
+CHART_EWMA = "EWMA"
+CHART_CUSUM = "CUSUM"
+CHART_THREE_WAY = "three way"
+CHART_TIME_SERIES = "time series"
+"""
 

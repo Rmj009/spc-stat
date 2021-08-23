@@ -10,6 +10,7 @@ def plotSPCchart(app):
   @app.route("/v1/spchart", methods=['GET'])
   def spcChart():
     points = request.args.get('points')
+    points = [ float(i) for i in points.split(',')]
     try:
       if (points == None) or (len(points) == 0):
         result = 'PointsInvaild'

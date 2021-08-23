@@ -43,7 +43,7 @@ def home():
 ############################################
 """
       frontend part:
-      temporarily comment out until build up control chart project
+      temporarily comment out until build up control chart project which is the Version2 of the 
 """
 ############################################
 ############################################

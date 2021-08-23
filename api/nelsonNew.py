@@ -2,6 +2,15 @@ from flask import request, abort
 from fastapi import Depends
 from utils.gauge import Gauge
 
+"""
+Verify the input sequenes upon "Nelson Rules" via func::Nelsonfunc( 4 inputs shown as below)
+4 inputs from user requests : (beginTime=begin, finalTime=endtime, wuuid=wuuid, suuid=suuid)
+output: Nelson Array[rule1~rule8] that represent whether or not the sequenes obey the rules
+For more detail pls refer to the utils.spcTable "Nelsonfunc"
+"""
+
+
+
 def GormToNelson(app):
     @app.route("/v1/nelson-new", methods=['GET'])
     def NelsonAPI(

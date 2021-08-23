@@ -3,7 +3,19 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-# class western(object):
+
+"""
+Read csv Examples 
+# df = pd.read_csv('workbook_name.csv', sep=',',header=0); nmp = df.to_numpy() ;data = nmp[:,11]#; data = pd.DataFrame(nmp[:,11])
+1. entrypoint def(NelsonRules2) 
+2. pipeline to assign_datum , check the rules by violations(restRule1~4)
+3. Draw the 3sigma (plotAxlines) and save fig in statics/img = 'static/nelson_chart.png'
+
+P.S. the draw which as a substitue to gauge.nelson()
+"""
+
+
+
 
 def rando():
     theNum = np.random.randint(low = 7.5, high = 15 , size = 195)
@@ -86,8 +98,8 @@ def plotAxlines(array):
     for level,color in enumerate(colors):
         upper = theMean + sd*level
         lower = theMean - sd*level
-        plt.axhline(y=upper, linewidth=0.5, color=color)
-        plt.axhline(y=lower, linewidth=0.5, color=color)
+        plt.axhline(y=upper, linewidth=2, color=color)
+        plt.axhline(y=lower, linewidth=2, color=color)
     return
 
 def NelsonRules2(points,LSL,USL,Target):
@@ -95,12 +107,10 @@ def NelsonRules2(points,LSL,USL,Target):
     points = [float(i) for i in points.split(',')]
     Target = float(Target)
     trendObj = {'all_vals': points,'format_1': np.zeros(len(points)),'format_2': np.zeros(len(points)),'format_3': np.zeros(len(points)),'format_4': np.zeros(len(points))}
-    # print('trendObj[]\n',pd.DataFrame(trendObj))
     assign_datum(obj = (trendObj), datum = Target)
     # pd_trendObj = pd.DataFrame(trendObj) #, columns = [alphabets[name] for name in range(len(trendObj))], index = [i for i  in range(len(ptV)+1)] )
     # print(',,,',[index for index,val in enumerate(trendObj['format_1']) if val])
     # print(pd_trendObj)
-    # plt.plot(trendObj['all_vals'])
     mark = 10.5
     plt.figure(figsize=(20,10))
     plt.legend()
@@ -111,12 +121,10 @@ def NelsonRules2(points,LSL,USL,Target):
     plt.plot(trendObj['all_vals'], color='#81B5CB', ls="", marker=".", markersize=mark)
     plotAxlines(trendObj['all_vals'])
     plt.ylim(0,max(points)+np.std(points,ddof=1))
-    # plt.savefig('static/nelson_chart.png')
+    plt.savefig('static/nelson_chart.png')
     plt.show()
 
 
-# df = pd.read_csv('workbook_name.csv', sep=',',header=0); nmp = df.to_numpy() ;data = nmp[:,11]#; data = pd.DataFrame(nmp[:,11])
-# points = nmp[:,11]
 
 # alphabets = [chr(i) for i in range(ord('A'),ord('Z')+1)]
 

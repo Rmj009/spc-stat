@@ -69,7 +69,7 @@ class Gauge():
         Ppk = np.min([Ppu,Ppl]) 
         # capability ratio
         CPR = sigmaPpk, sigmaCpk, len(good), totalNum, goodRate ,USL,LSL,UCL,LCL,cp_mean,Target ,rangespec, Cpu, Cpl, Cp, Ck, Cpk, Ppk
-        keys = ["sigma","group-sigma","good","totalNum","goodRate","USL","LSL","UCL","LCL","overallMean","target","range","Cpu","Cpl","Cp","Ck","Cpk","Ppk"]
+        keys = ["sigma","groupSigma","good","totalNum","goodRate","USL","LSL","UCL","LCL","overallMean","target","range","Cpu","Cpl","Cp","Ck","Cpk","Ppk"]
         capability = dict(zip(keys, CPR))
         ### Reference :https://en.wikipedia.org/wiki/Process_performance_index
         return capability # total 17 + 2

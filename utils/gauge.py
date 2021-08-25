@@ -3,38 +3,45 @@ import numpy as np
 
 
 class Gauge():
-    def __init__(self, points,good,defect,LSLlst,USLlst,measureAmount,stdValue):
+    def __init__(self, points,LSLlst,USLlst,measureAmount,stdValue): #good,defect,
         # super().__init__(points,good,defect,LSLlst,USLlst,measureAmount,stdValue)
         self.points = points
-        self.good = good 
-        self.defect = defect
+        # self.good = good 
+        # self.defect = defect
         self.LSLlst = LSLlst
         self.USLlst = USLlst
         self.measureAmount = measureAmount
         self.stdValue = stdValue
     
     def __repr__(self):
-        return f"SpcMeasurePointConfigUUID:{self.points,self.defect,self.LSLlst,self.USLlst,self.measureAmount,self.stdValue}."
+        return f"SpcMeasurePointConfigUUID:{self.points,self.LSLlst,self.USLlst,self.measureAmount,self.stdValue}."
 
-    def stats(points,good,defect,LSLlst,USLlst,measureAmount,stdValue):
+    def stats(points,LSLlst,USLlst,measureAmount,stdValue): #good,defect,
         points = [ float(i) for i in points.split(',')]
         # [dict([i, int(x)] for i, x in b.items()) for b in list]
-        df = np.array([good,defect,LSLlst,USLlst,measureAmount,stdValue]).astype(float)#,index=integer_array)
+        df = np.array([LSLlst,USLlst,measureAmount,stdValue]).astype(float)#,index=integer_array) ##good,defect,
         Target = df[-1]
-        good = df[0]
-        defect = df[1]
-        LSLlst = df[2]
-        USLlst = df[3]
-        measureAmount = df[4]
+        # good = df[0]
+        # defect = df[1]
+        LSLlst = df[0]
+        USLlst = df[1]
+        good = []
+        defect = []
+        measureAmount = df[2]
         USL = Target + USLlst
         LSL = Target - LSLlst
         LCL = (LSL + Target)/2
         UCL = (USL + Target)/2
         rangespec = USL - LSL
-        totalNum = good + defect
-        goodRate = good / totalNum
-
+        totalNum = len(points)
+        for i in points: 
+            if (i > USL) or (i < LSL) :
+                defect.append(i)
+            else:
+                good.append(i)
         
+        goodRate = len(good) / totalNum
+
         ngroup = int(len(df))/int(measureAmount)
         if (ngroup.is_integer() == False):
             cpkarr = np.array_split(points[::-1],len(points)//measureAmount) #revserve to split coz the array_split method

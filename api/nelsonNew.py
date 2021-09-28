@@ -13,27 +13,27 @@ For more detail pls refer to the utils.spcTable "Nelsonfunc"
 
 def GormToNelson(app):
     @app.route("/v1/nelson-new", methods=['GET'])
-    def NelsonAPI(
-        # authentication: bool = Depends(validate_request)
-    ):
+    def NelsonAPI():
+        # authentication: bool = Depends(validate_request):
         points = request.args.get('points')
-        LSL = request.args.get('LSL')
-        USL = request.args.get('USL')
-        print(USL,LSL)
+        lsl = request.args.get('lsl')
+        usl = request.args.get('usl')
+        # print(points)
+        # print(usl,lsl)
         
         try:
             if (points == None) or (len(points) == 0):
                 result = 'PointsInvaild'
                 return result, 400
-            # elif (USL == None) or (len(USL) == 0):
-            #     result = 'USLInvaild'
+            # elif (usl == None) or (len(usl) == 0):
+            #     result = 'uslInvaild'
             #     return result, 400
-            # elif (LSL == None) or (len(LSL) == 0):
-            #     result = 'LSLInvaild'
+            # elif (lsl == None) or (len(lsl) == 0):
+            #     result = 'lslInvaild'
             #     return result, 400 
 
             else:
-                result = Gauge.nelson(points=points, LSL=LSL, USL=USL)
+                result = Gauge.nelson(points=points, lsl=lsl, usl=usl)
                 if ( result != None ):
                     return result, 200
                 else:
@@ -41,4 +41,4 @@ def GormToNelson(app):
 
         except Exception as errors:
             print('SHOWerror',errors)
-            return 'CalcFail', 500
+            return 'Impenderrors', 500

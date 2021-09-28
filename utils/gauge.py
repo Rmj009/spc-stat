@@ -75,15 +75,14 @@ class Gauge():
         ### Reference :https://en.wikipedia.org/wiki/Process_performance_index
         return capability # total 17 + 2
     
-    def nelson(points, LSL, USL):
+    def nelson(points, lsl, usl):
         points = [ float(i) for i in points.split(',')]
         nelsonBool = apply_rules(original=points) # markup points after rules verified
-        specs = {"specs": checkspec(pts=points, LSL=LSL, USL=USL)}
-        print(specs)
+        specs = checkspec(pts=points, lsl=float(lsl), usl=float(usl))
+        # print(specs)
         # nelsonBool = nelsonBool.append(check_lsl_usl)
         df_list = nelsonBool.values.tolist()
         # print(df_list)
-        NelsonCol = ["data","rule1","rule2","rule3","rule4","rule5","rule6","rule7","rule8"]
         """
         Another parsing method requires to be mentioned.
          NelsonContext = pd.DataFrame()
@@ -99,7 +98,8 @@ class Gauge():
         rule6 = [item[6] for item in df_list]
         rule7 = [item[7] for item in df_list]
         rule8 = [item[8] for item in df_list]
-        columnValue = [data,rule1 ,rule2,rule3,rule4,rule5,rule6,rule7,rule8, specs]
+        NelsonCol = ["data","rule1","rule2","rule3","rule4","rule5","rule6","rule7","rule8","specs"]
+        columnValue = [data,rule1 ,rule2,rule3,rule4,rule5,rule6,rule7,rule8,specs]
         NelsonContext = dict(zip(NelsonCol,columnValue))
         print('NelsonContext', NelsonContext)
         # NelsonContext = json.loads(NelsonContext.to_json(orient="split"))

@@ -99,17 +99,17 @@ def apply_rules(original, rules='all', chart_type=2):
     return df #, fig
 
 
-def checkspec(pts, LSL, USL):
+def checkspec(pts, lsl, usl):
     """check out of spec boundary."""
     # copy_original = pts
-    print(USL,LSL)
+    print(usl,lsl)
     results = []
     for i in pts:
-        if i >= USL:
-            print('USL')
+        if i >= usl:
+            print('usl')
             results.append(1)
-        elif i <= LSL:
-            print('LSL')
+        elif i <= lsl:
+            print('lsl')
             results.append(1)
         else:
             results.append(0)

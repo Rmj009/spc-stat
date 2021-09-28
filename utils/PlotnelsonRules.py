@@ -142,7 +142,7 @@ def rule1(original, mean, sigma):
 
 
 def rule2(original, mean, sigma):
-    """Nine (or more) points in a row are on the same side of the mean."""
+    """EIGHT points in a row are on the same side of the mean."""
     if mean is None:
         mean = original.mean()
 
@@ -150,7 +150,7 @@ def rule2(original, mean, sigma):
         sigma = original.std()
 
     copy_original = original
-    segment_len = 9
+    segment_len = 8
 
     side_of_mean = []
     for i in range(len(copy_original)):

@@ -4,7 +4,7 @@ from sqlalchemy.exc import DatabaseError
 """
 Internal import as below
 """
-from components.alchemy_db import * #spc_measure_point_config,spc_measure_point_history,work_order_op_history
+# from components.alchemy_db import * #spc_measure_point_config,spc_measure_point_history,work_order_op_history
 from utils.calculator import Calculator
 from utils.PlotnelsonRules import *
 

@@ -1,4 +1,4 @@
-from api.specBound import check_lsl_usl
+# from api.specBound import check_lsl_usl
 from utils.PlotnelsonRules import *
 import numpy as np
 

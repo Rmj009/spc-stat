@@ -19,6 +19,7 @@ def GormToNelson(app):
         points = request.args.get('points')
         LSL = request.args.get('LSL')
         USL = request.args.get('USL')
+        print(USL,LSL)
         
         try:
             if (points == None) or (len(points) == 0):
@@ -29,10 +30,10 @@ def GormToNelson(app):
             #     return result, 400
             # elif (LSL == None) or (len(LSL) == 0):
             #     result = 'LSLInvaild'
-            #     return result, 400  
+            #     return result, 400 
 
             else:
-                result = Gauge.nelson(points, LSL, USL)
+                result = Gauge.nelson(points=points, LSL=LSL, USL=USL)
                 if ( result != None ):
                     return result, 200
                 else:

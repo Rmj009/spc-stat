@@ -101,13 +101,14 @@ def apply_rules(original, rules='all', chart_type=2):
 
 def checkspec(pts, LSL, USL):
     """check out of spec boundary."""
-    copy_original = pts
+    # copy_original = pts
+    print(USL,LSL)
     results = []
-    for i in range(len(copy_original)):
-        if copy_original[i] >= USL:
+    for i in pts:
+        if i >= USL:
             print('USL')
             results.append(1)
-        elif copy_original[i] <= LSL:
+        elif i <= LSL:
             print('LSL')
             results.append(1)
         else:

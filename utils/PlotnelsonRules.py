@@ -86,6 +86,7 @@ def plot_rules(data, chart_type=2):
 
 def apply_rules(original, rules='all', chart_type=2):
     
+    # checkspec(pts=original)
     data_mean = np.mean(original)
     data_sig = np.std(original)
     if rules == 'all':
@@ -96,6 +97,23 @@ def apply_rules(original, rules='all', chart_type=2):
     # fig = plot_rules(df, chart_type)
 
     return df #, fig
+
+
+def checkspec(pts, LSL, USL):
+    """check out of spec boundary."""
+    copy_original = pts
+    results = []
+    for i in range(len(copy_original)):
+        if copy_original[i] >= USL:
+            print('USL')
+            results.append(1)
+        elif copy_original[i] <= LSL:
+            print('LSL')
+            results.append(1)
+        else:
+            results.append(0)
+
+    return results
 
 
 def rule1(original, mean, sigma):
@@ -162,7 +180,7 @@ def rule3(original, mean, sigma):
     if sigma is None:
         sigma = original.std()
 
-    segment_len = 6
+    segment_len = 8 
     copy_original = original
     chunks = _sliding_chunker(copy_original, segment_len, 1)
 
@@ -278,8 +296,9 @@ def rule6(original, mean, sigma):
 
     return results
 
-def rule7(original, mean, sigma): #temporary off
+def rule7(original, mean, sigma):
     """Fifteen points in a row are all within 1 standard deviation of the mean on either side of the mean."""
+    # revised to EIGHT points
 
     if mean is None:
         mean = original.mean()
@@ -287,7 +306,7 @@ def rule7(original, mean, sigma): #temporary off
     if sigma is None:
         sigma = original.std()
 
-    segment_len = 15
+    segment_len = 8
     copy_original = original
     chunks = _sliding_chunker(copy_original, segment_len = 15, slide_len = 1)
 

@@ -1,5 +1,5 @@
 from flask import request, abort, render_template, Blueprint, g
-from utils.PlotNelsonRules2 import *
+from utils.nelsonrule4 import *
 
 app2 = Blueprint('app2', __name__, static_folder='/static')
 

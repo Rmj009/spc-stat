@@ -1,3 +1,4 @@
+from api.specBound import check_lsl_usl
 from utils.PlotnelsonRules import *
 import numpy as np
 
@@ -74,12 +75,15 @@ class Gauge():
         ### Reference :https://en.wikipedia.org/wiki/Process_performance_index
         return capability # total 17 + 2
     
-    def nelson(points):
+    def nelson(points, LSL, USL):
         points = [ float(i) for i in points.split(',')]
+        lsl = LSL
+        usl = USL
         nelsonBool = apply_rules(original=points) # markup points after rules verified
-        # print(nelsonBool)
+        check_lsl_usl = checkspec(pts=points, LSL=LSL, USL=USL)
+        nelsonBool = nelsonBool.append(check_lsl_usl)
         df_list = nelsonBool.values.tolist()
-        # print(df_list)
+        print(df_list)
         NelsonCol = ["data","rule1","rule2","rule3","rule4","rule5","rule6","rule7","rule8"]
         """
         Another parsing method requires to be mentioned.

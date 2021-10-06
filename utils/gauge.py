@@ -1,7 +1,7 @@
 # from api.specBound import check_lsl_usl
 from utils.PlotnelsonRules import *
 import numpy as np
-
+import pandas as pd
 
 class Gauge():
     def __init__(self, points,LSLlst,USLlst,measureAmount,stdValue): #good,defect,
@@ -18,7 +18,10 @@ class Gauge():
         return f"SpcMeasurePointConfigUUID:{self.points,self.LSLlst,self.USLlst,self.measureAmount,self.stdValue}."
 
     def stats(points,LSLlst,USLlst,measureAmount,stdValue): #good,defect,
-        points = [ float(i) for i in points.split(',')]
+        # points = pd.read_csv(points)
+        # print('print(points)',points)
+        points = [ float(i) for i in enumerate(points.split(','))]
+        print('print(::::)',points)
         # [dict([i, int(x)] for i, x in b.items()) for b in list]
         df = np.array([LSLlst,USLlst,measureAmount,stdValue]).astype(float)#,index=integer_array) ##good,defect,
         Target = df[-1]

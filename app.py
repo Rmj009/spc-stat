@@ -48,59 +48,59 @@ class callAPI:
 # app.add_url_rule('', view_func=as_view('/v1/capability-new'))
 
 
-async def async_check_auth(AuthorizationToken):
-  url = os.getenv('DZ_TOKEN_PERMISSION')
-  headers = { 'Authorization': AuthorizationToken}
-  response = requests.request("GET", url, headers=headers) #, data=payload, files=files)
-  # print('BUG2',response.status_code )
-  json_text = response.json()
-  # print('JSONTEXT::::::::;',json_text)
-  if (response.status_code == 400):
-    return render_template('400.html'), 400
-  elif response.status_code != 200:
-    return False
-  elif json_text['access'] == True:
-    return True
-  else:
-    return False
+# async def async_check_auth(AuthorizationToken):
+#   url = os.getenv('DZ_TOKEN_PERMISSION')
+#   headers = { 'Authorization': AuthorizationToken}
+#   response = requests.request("GET", url, headers=headers) #, data=payload, files=files)
+#   # print('BUG2',response.status_code )
+#   json_text = response.json()
+#   # print('JSONTEXT::::::::;',json_text)
+#   if (response.status_code == 400):
+#     return render_template('400.html'), 400
+#   elif response.status_code != 200:
+#     return False
+#   elif json_text['access'] == True:
+#     return True
+#   else:
+#     return False
 
-@app.before_request
-def auth():
-  # print('path: {0}, url: {1} , endpoint:{2}'.format(request.path, request.url,request.endpoint))
-  try:
-    header = request.headers
-    endpoint = request.endpoint
-    # print("///////////////////")
-    # # print('show {0}{1}'.format(header,endpoint))
-    # print("///////////////////")
-  except AssertionError as asserr:
-    raise asserr
-  except Exception as eerr:
-    print("///////////////////")
-    print('show {0}'.format(eerr))
-    print("///////////////////")
+# @app.before_request
+# def auth():
+#   # print('path: {0}, url: {1} , endpoint:{2}'.format(request.path, request.url,request.endpoint))
+#   try:
+#     header = request.headers
+#     endpoint = request.endpoint
+#     # print("///////////////////")
+#     # # print('show {0}{1}'.format(header,endpoint))
+#     # print("///////////////////")
+#   except AssertionError as asserr:
+#     raise asserr
+#   except Exception as eerr:
+#     print("///////////////////")
+#     print('show {0}'.format(eerr))
+#     print("///////////////////")
 
-  if "Authorization" in header:
-      AuthorizationToken =  header['Authorization']
-      is_auth = asyncio.run(async_check_auth(AuthorizationToken))
-      if is_auth != True:
-        return render_template('401.html'), 401
-      else:
-        return 
+#   if "Authorization" in header:
+#       AuthorizationToken =  header['Authorization']
+#       is_auth = asyncio.run(async_check_auth(AuthorizationToken))
+#       if is_auth != True:
+#         return render_template('401.html'), 401
+#       else:
+#         return 
   
-  elif ("Authorization" not in header) and (endpoint == 'NelsonAPI' or endpoint == 'CPR'):
-    # print("Nelson API or Capability API without BearerAuth", endpoint)
-    return render_template('401.html'), 401
+#   elif ("Authorization" not in header) and (endpoint == 'NelsonAPI' or endpoint == 'CPR'):
+#     # print("Nelson API or Capability API without BearerAuth", endpoint)
+#     return render_template('401.html'), 401
   
-  elif ("Authorization" not in header) and ('app2' or 'static' in endpoint):
-    print("requestendpoint",endpoint)
-    # return render_template('401.html'), 401
-    return
+#   elif ("Authorization" not in header) and ('app2' or 'static' in endpoint):
+#     print("requestendpoint",endpoint)
+#     # return render_template('401.html'), 401
+#     return
 
-  else:
-    print("NO AUTH header\n:::".format(request.url))
-    return render_template('401.html'), 401
-    # return
+#   else:
+#     print("NO AUTH header\n:::".format(request.url))
+#     return render_template('401.html'), 401
+#     # return
 
 # loop = asyncio.get_event_loop()
 

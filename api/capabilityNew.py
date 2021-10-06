@@ -1,4 +1,5 @@
 from flask import request, abort
+from numpy.core.fromnumeric import std
 from utils.gauge import Gauge
 
 """
@@ -14,12 +15,11 @@ def GormToCPR(app):
         points = request.args.get('points')
         usllst = request.args.get('USL') 
         lsllst = request.args.get('LSL')
-        # goodlst = request.args.get('good')
-        # defectlst = request.args.get('defect')
         measureAmount = request.args.get('measureAmount') #measureAmount
         stdValue = request.args.get('stdValue')
         try:
-            if (points == None) or (len(points) == 0):
+            print('::::app', points)
+            if isinstance(points,(str,float,list)) != True: #(points == None) or 
                 result = 'PointsInvaild'
                 return result, 400
             elif (usllst == None) or (len(usllst) == 0):
@@ -28,12 +28,6 @@ def GormToCPR(app):
             elif (lsllst == None) or (len(lsllst) == 0):
                 result = 'LSLInvaild'
                 return result, 400
-            # elif (goodlst == None) or (len(goodlst) == 0):
-            #     result = 'GOODInvaild'
-            #     return result, 400
-            # elif (defectlst == None) or (len(defectlst) == 0):
-            #     result = 'DefectInvaild'
-            #     return result, 400
             elif (measureAmount == None) or (len(measureAmount) == 0):
                 result = 'measureAmountInvaild'
                 return result, 400
@@ -44,6 +38,8 @@ def GormToCPR(app):
                 # GormResult = [points,[goodlst],[defectlst],[lsllst],[usllst],[measureAmount],[stdValue]]
                 # CapabilityCol = ["points","goodlst","defectlst","lsllst","usllst","measureAmount","stdValue"]
                 # GormResults = dict(zip(CapabilityCol, GormResult))
+                print('pointsss', points, usllst, lsllst, measureAmount, stdValue)
+                # return points
                 result = Gauge.stats(points,lsllst,usllst,measureAmount,stdValue) #goodlst,defectlst,
                 if ( result != None ):
                     return result, 200

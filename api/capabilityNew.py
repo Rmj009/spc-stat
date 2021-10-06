@@ -18,7 +18,6 @@ def GormToCPR(app):
         measureAmount = request.args.get('measureAmount') #measureAmount
         stdValue = request.args.get('stdValue')
         try:
-            print('::::app', points)
             if isinstance(points,(str,float,list)) != True: #(points == None) or 
                 result = 'PointsInvaild'
                 return result, 400
@@ -38,8 +37,7 @@ def GormToCPR(app):
                 # GormResult = [points,[goodlst],[defectlst],[lsllst],[usllst],[measureAmount],[stdValue]]
                 # CapabilityCol = ["points","goodlst","defectlst","lsllst","usllst","measureAmount","stdValue"]
                 # GormResults = dict(zip(CapabilityCol, GormResult))
-                print('pointsss', points, usllst, lsllst, measureAmount, stdValue)
-                # return points
+                # print('pointsss', points, usllst, lsllst, measureAmount, stdValue)
                 result = Gauge.stats(points,lsllst,usllst,measureAmount,stdValue) #goodlst,defectlst,
                 if ( result != None ):
                     return result, 200

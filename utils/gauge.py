@@ -1,7 +1,9 @@
 # from api.specBound import check_lsl_usl
+from numpy.core.fromnumeric import partition
 from utils.PlotnelsonRules import *
 import numpy as np
 import pandas as pd
+import re
 
 class Gauge():
     def __init__(self, points,LSLlst,USLlst,measureAmount,stdValue): #good,defect,
@@ -18,35 +20,74 @@ class Gauge():
         return f"SpcMeasurePointConfigUUID:{self.points,self.LSLlst,self.USLlst,self.measureAmount,self.stdValue}."
 
     def stats(points,LSLlst,USLlst,measureAmount,stdValue): #good,defect,
-        # points = pd.read_csv(points)
+        points = [i for i in (points.split(','))]
+        points = pd.DataFrame(points)
+        # print('print(::::)\n',points)
         # print('print(points)',points)
-        points = [ float(i) for i in enumerate(points.split(','))]
-        print('print(::::)',points)
+        # points = [ float(i) for i in enumerate(points.split(','))]
         # [dict([i, int(x)] for i, x in b.items()) for b in list]
-        df = np.array([LSLlst,USLlst,measureAmount,stdValue]).astype(float)#,index=integer_array) ##good,defect,
-        Target = df[-1]
-        # good = df[0]
-        # defect = df[1]
-        LSLlst = df[0]
-        USLlst = df[1]
-        good = []
-        defect = []
-        measureAmount = df[2]
+        LSLlst,USLlst,measureAmount,stdValue = [ float(i) for i in (LSLlst,USLlst,measureAmount,stdValue)]
+        # print('LSLlst,USLlst,measureAmount,stdValue', LSLlst,USLlst,measureAmount,stdValue)
+        specification = [LSLlst,USLlst,measureAmount,stdValue]
+        specificationcols = ["LSLlst","USLlst","measureAmount","stdValue"]
+        df = pd.DataFrame(dict(zip(specificationcols, specification)),index= [0])
+        # df = np.array([LSLlst,USLlst,measureAmount,stdValue]).astype(float)#,index=integer_array) 
+        print('dfdfdf\n',df)
+        Target = df['stdValue']
+        LSLlst = df['LSLlst']
+        USLlst = df['USLlst']
+        countgooddefect = []
+        measureAmount = int(df['measureAmount'])
+        # print('measureAmount',measureAmount)
         USL = Target + USLlst
         LSL = Target - LSLlst
         LCL = (LSL + Target)/2
         UCL = (USL + Target)/2
         rangespec = USL - LSL
         totalNum = len(points)
-        for i in points: 
-            if (i > USL) or (i < LSL) :
-                defect.append(i)
-            else:
-                good.append(i)
+        print('::::: \n',totalNum)
+        print(':::::: \n')
+        pointslst = [list() for i in map(str,range(len(points)//measureAmount))]
+        nonenum = []
+        points = np.array_split(points, len(points)//measureAmount)
+        # print('aa \n',points[0])
+        # trim = points[1]
+        # # pp = [item.apply(lambda x: x.str.strip()) for item in trim] #item.strip(' ') x.str.strip(' ')
+        # print('pppp',type(points[0][0]))
+        # for item in trim:
+        #     if (bool(item and not item.isspace()) == False):
+        #         print('F')
+            # nonenum.append(item.strip(' '))
+        # print('strip\n', pp)
         
-        goodRate = len(good) / totalNum
+        # print('rrr', nonenum)
+        for item in points: #for item in item:
+            if (bool(item and not item.isspace()) == False): # check the empty , None or blank
+                nonenum += 1
+                print('vvvv',v.items())
+                if (v > USL) or (v < LSL) :
+                    countgooddefect.append(1) # add defect
+                else:
+                    countgooddefect.append(0) # add good
+            else:
+                # flags = 0
+                # pointslst[flags].append(item)
+                print('series',item)
+        
+        # print('len(points)',points)
+        # subgroup1_num = len(points) - nonenum
+        # print(pointslst)
 
-        ngroup = int(len(df))/int(measureAmount)
+        # for k,v in points:
+        #     if (v > USL) or (v < LSL) :
+        #         defect.append(1)
+        #     else:
+        #         good.append(1)
+        # points = points.str.rsplit( n = measureAmount)
+        # print('///////', pointslst)
+        goodRate = countgooddefect.count(0)/ totalNum
+
+        ngroup = len(points)/measureAmount
         if (ngroup.is_integer() == False):
             cpkarr = np.array_split(points[::-1],len(points)//measureAmount) #revserve to split coz the array_split method
             cpkarrMEAN = [np.mean(i) for i in cpkarr]

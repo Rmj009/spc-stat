@@ -55,9 +55,9 @@ class Gauge():
         rangespec = USL - LSL
         totalNum = len(points)
         # print('len(points)//measureAmount',len(points)//measureAmount)
-        # points = np.array_split(points, len(points)//measureAmount)
+        points = np.array_split(points[::-1], len(points)//measureAmount)
         
-        points = Gauge.sliding_chunker(points, segment_len = measureAmount, slide_len = len(points)//measureAmount )
+        # points = Gauge.sliding_chunker(points, segment_len = measureAmount, slide_len = len(points)//measureAmount )
         print('::::: \n',points)
         print(':::::: \n')
 
@@ -119,7 +119,7 @@ class Gauge():
                 "USL","LSL","UCL","LCL","Cpu","Cpl","Cp","Ck","Cpk","Ppk"]
         
         capability = dict(zip(keys, CPR))
-        print('capability',capability)
+        # print('capability',capability)
         ### Reference :https://en.wikipedia.org/wiki/Process_performance_index
         return capability
     

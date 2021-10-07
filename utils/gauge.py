@@ -113,10 +113,10 @@ class Gauge():
         Ppk = np.min([Ppu,Ppl]) 
         # capability ratio
         CPR = sigmaPpk, sigmaCpk, countgooddefect.count(0),countgooddefect.count(1), totalNum, goodRate, cp_mean, Target.item() ,rangespec.item() \
-             ,USL.item(),LSL.item(),UCL.item(),LCL.item(), Cpu.item(), Cpl.item(), Cp.item(), Ck.item(), Cpk, Ppk
+              ,USL.item(),LSL.item(),UCL.item(),LCL.item(), Cpu.item(), Cpl.item(), Cp.item(), Ck.item(), Cpk, Ppk
 
         keys = ["sigma","groupSigma","good","defect","totalNum","goodRate","overallMean","target","range",\
-              "USL","LSL","UCL","LCL","Cpu","Cpl","Cp","Ck","Cpk","Ppk"]
+                "USL","LSL","UCL","LCL","Cpu","Cpl","Cp","Ck","Cpk","Ppk"]
         
         capability = dict(zip(keys, CPR))
         print('capability',capability)

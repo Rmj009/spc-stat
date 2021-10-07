@@ -34,8 +34,6 @@ class Gauge():
     def stats(points,LSLlst,USLlst,measureAmount,stdValue): #good,defect,
         points = [i for i in (points.split(','))]
         # points = pd.DataFrame(points)
-        # print('print(points)',points)
-        # points = [ float(i) for i in enumerate(points.split(','))]
         # [dict([i, int(x)] for i, x in b.items()) for b in list]
         LSLlst,USLlst,measureAmount,stdValue = [ float(i) for i in (LSLlst,USLlst,measureAmount,stdValue)]
         # print('LSLlst,USLlst,measureAmount,stdValue', LSLlst,USLlst,measureAmount,stdValue)
@@ -48,7 +46,7 @@ class Gauge():
         LSLlst = df['LSLlst'].astype('float64')
         USLlst = df['USLlst'].astype('float64')
         countgooddefect = []
-        measureAmount = int(df['measureAmount'])
+        measureAmount = int(df['measureAmount']) # pd.series convert to int
         # print('measureAmount',measureAmount)
         USL = Target + USLlst
         LSL = Target - LSLlst
@@ -56,40 +54,17 @@ class Gauge():
         UCL = (USL + Target)/2
         rangespec = USL - LSL
         totalNum = len(points)
-        # pointslst = [list() for i in map(str,range(len(points)//measureAmount))]
-        print('len(points)//measureAmount',len(points)//measureAmount)
+        # print('len(points)//measureAmount',len(points)//measureAmount)
         # points = np.array_split(points, len(points)//measureAmount)
         
         points = Gauge.sliding_chunker(points, segment_len = measureAmount, slide_len = len(points)//measureAmount )
         print('::::: \n',points)
         print(':::::: \n')
-        # print(pointslst)
-        print('------------------',type(USL),LSL,LCL,UCL)
-        # print('aa \n',points[0])
-        # trim = points[1]
-        # # pp = [item.apply(lambda x: x.str.strip()) for item in trim] #item.strip(' ') x.str.strip(' ')
-        # print('pppp',type(points[0][0]))
-        # for item in trim:
-        #     if (bool(item and not item.isspace()) == False):
-        #         print('F')
-            # nonenum.append(item.strip(' '))
-        # print('strip\n', pp)
+
+        # print('------------------',type(USL),LSL,LCL,UCL)
         pointslst = [[i.strip() for i in lst if bool(i and not i.isspace())] for lst in points] # iterate 1st_outer list, 2nd_inner list
         pointslst = [[float(i) for i in lst ] for lst in pointslst]
         print('///point_into_subgroup////', pointslst)
-        # print('///point_into_subgroup////', pointslst)
-        # print('aa',aa)
-            # for i in item:
-            #     if (bool(i and not i.isspace()) == False): # check the empty , None or blank
-            #         nonenum += 1
-            #         print('vvvv', type(i))
-            #     else:
-            #         flags = 0
-            #         pointslst[flags].append(i)
-            #         print('series',i)
-        
-        # print('len(points)',points)
-        # subgroup1_num = len(points) - nonenum
         print('gooddefectcount')
         for lst in pointslst:
             for item in lst:
@@ -99,14 +74,15 @@ class Gauge():
                 else:
                     # print('0',item)
                     countgooddefect.append(0)
-        # points = points.str.rsplit( n = measureAmount)
-        
-        goodRate = countgooddefect.count(0)/ totalNum
-        print('///////', goodRate)
+    
+        goodRate = countgooddefect.count(0)/ totalNum   # print('///////', goodRate)
         cpkarrMEAN = [np.mean(i) for i in pointslst]
-        sigmaCpk = np.std(cpkarrMEAN,ddof=1) #pd.std() >>> //(n)
-        print('///////', cpkarrMEAN,sigmaCpk)
+        sigmaCpk = np.std(cpkarrMEAN,ddof=1) #pd.std() >>> //(n)   # print('///////', cpkarrMEAN,sigmaCpk)
 
+        
+        # -------------------------------------
+        # ------used to groupby points---------
+        # -------------------------------------
         # ngroup = len(points)/measureAmount
         # if (ngroup.is_integer() == False):
         #     cpkarr = np.array_split(points[::-1],len(points)//measureAmount) #revserve to split coz the array_split method
@@ -116,6 +92,8 @@ class Gauge():
         #     cpkarr = np.array_split(points,ngroup)
         #     cpkarrMEAN = [np.mean(i) for i in cpkarr]
         #     sigmaCpk = np.std(cpkarrMEAN,ddof=1) # numpy standard deviation >>> //(n-1)
+        # -------------------------------------
+
         flatten_pointslst = [val for sublist in pointslst for val in sublist]
         cp_mean = np.mean(flatten_pointslst)
         sigmaPpk = np.std(flatten_pointslst,ddof=1)
@@ -134,21 +112,22 @@ class Gauge():
         Ppl = (cp_mean - LCL) / (sigmaPpk*3)
         Ppk = np.min([Ppu,Ppl]) 
         # capability ratio
-        CPR = sigmaPpk, sigmaCpk, countgooddefect.count(0), totalNum, goodRate ,USL.item(),LSL.item(),UCL.item(),LCL.item(),cp_mean,Target.item() ,rangespec.item(), Cpu.item(), Cpl.item(), Cp.item(), Ck.item(), Cpk, Ppk
-        keys = ["sigma","groupSigma","good","totalNum","goodRate","USL","LSL","UCL","LCL","overallMean","target","range","Cpu","Cpl","Cp","Ck","Cpk","Ppk"]
+        CPR = sigmaPpk, sigmaCpk, countgooddefect.count(0),countgooddefect.count(1), totalNum, goodRate, cp_mean, Target.item() ,rangespec.item() \
+             ,USL.item(),LSL.item(),UCL.item(),LCL.item(), Cpu.item(), Cpl.item(), Cp.item(), Ck.item(), Cpk, Ppk
+
+        keys = ["sigma","groupSigma","good","defect","totalNum","goodRate","overallMean","target","range",\
+              "USL","LSL","UCL","LCL","Cpu","Cpl","Cp","Ck","Cpk","Ppk"]
+        
         capability = dict(zip(keys, CPR))
         print('capability',capability)
         ### Reference :https://en.wikipedia.org/wiki/Process_performance_index
-        return capability # total 17 + 2
+        return capability
     
     def nelson(points, lsl, usl):
         points = [ float(i) for i in points.split(',')]
         nelsonBool = apply_rules(original=points) # markup points after rules verified
         specs = checkspec(pts=points, lsl=float(lsl), usl=float(usl))
-        # print(specs)
-        # nelsonBool = nelsonBool.append(check_lsl_usl)
         df_list = nelsonBool.values.tolist()
-        # print(df_list)
         """
         Another parsing method requires to be mentioned.
          NelsonContext = pd.DataFrame()

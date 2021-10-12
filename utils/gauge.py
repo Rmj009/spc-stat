@@ -56,6 +56,10 @@ class Gauge():
         totalNum = len(points)
         # print('len(points)//measureAmount',len(points)//measureAmount)
         points = np.array_split(points[::-1], len(points)//measureAmount)
+        # n = 2
+        # l = [1,2,3,4,5,6,7,8,9]
+        # [l[i:i+n] for i in range(0, len(l), n)]
+        # [[1, 2], [3, 4], [5, 6], [7, 8], [9]]
         
         # points = Gauge.sliding_chunker(points, segment_len = measureAmount, slide_len = len(points)//measureAmount )
         print('::::: \n',points)

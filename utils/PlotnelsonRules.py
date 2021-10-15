@@ -84,16 +84,17 @@ def plot_rules(data, chart_type=2):
 
 # plot_rules(data=data)
 
-def apply_rules(original, rules='all', chart_type=2):
+def apply_rules(original, stdValue, rules='all', chart_type=2):
     
     # checkspec(pts=original)
     data_mean = np.mean(original)
+    stdValues = stdValue
     data_sig = np.std(original)
     if rules == 'all':
         rules = [rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8]
     df = pd.DataFrame(original)
     for i in range(len(rules)):
-        df[rules[i].__name__] = rules[i](original= original, mean = data_mean, sigma = data_sig)
+        df[rules[i].__name__] = rules[i](original= original, mean = data_mean, sigma = data_sig, stdValue=stdValues)
     # fig = plot_rules(df, chart_type)
 
     return df #, fig
@@ -141,7 +142,7 @@ def rule1(original, mean, sigma):
     return results
 
 
-def rule2(original, mean, sigma):
+def rule2(original, mean, sigma, stdValue):
     """EIGHT points in a row are on the same side of the mean."""
     if mean is None:
         mean = original.mean()
@@ -151,10 +152,11 @@ def rule2(original, mean, sigma):
 
     copy_original = original
     segment_len = 8
+    stdValues = stdValue
 
     side_of_mean = []
     for i in range(len(copy_original)):
-        if copy_original[i] > mean:
+        if copy_original[i] > stdValues:
             side_of_mean.append(1)
         else:
             side_of_mean.append(-1)
@@ -210,7 +212,7 @@ def rule3(original, mean, sigma):
     return results
 
 def rule4(original, mean, sigma):
-    """Fourteen (or more) points in a row alternate in direction, increasing then decreasing."""
+    """eight (or more) points in a row alternate in direction, increasing then decreasing."""
     if mean is None:
         mean = original.mean()
 

@@ -127,10 +127,10 @@ class Gauge():
         ### Reference :https://en.wikipedia.org/wiki/Process_performance_index
         return capability
     
-    def nelson(points, lsl, usl):
+    def nelson(points, lsl, usl, stdValue):
         points = [ float(i) for i in points.split(',')]
-        nelsonBool = apply_rules(original=points) # markup points after rules verified
-        specs = checkspec(pts=points, lsl=float(lsl), usl=float(usl))
+        nelsonBool = apply_rules(original=points, stdValue = stdValue ) # markup points after rules verified
+        specs = checkspec(pts=points, lsl=float(lsl), usl=float(usl), stdValue = float(stdValue))
         df_list = nelsonBool.values.tolist()
         """
         Another parsing method requires to be mentioned.

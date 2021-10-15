@@ -18,6 +18,7 @@ def GormToNelson(app):
         points = request.args.get('points')
         lsl = request.args.get('lsl')
         usl = request.args.get('usl')
+        stdValue = request.args.get('stdValue')
         # print(points)
         # print(usl,lsl)
         
@@ -33,7 +34,7 @@ def GormToNelson(app):
             #     return result, 400 
 
             else:
-                result = Gauge.nelson(points=points, lsl=lsl, usl=usl)
+                result = Gauge.nelson(points=points, lsl=lsl, usl=usl, stdValue = stdValue)
                 if ( result != None ):
                     return result, 200
                 else:

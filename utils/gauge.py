@@ -129,8 +129,8 @@ class Gauge():
     
     def nelson(points, lsl, usl, stdValue):
         points = [ float(i) for i in points.split(',')]
-        nelsonBool = apply_rules(original=points, stdValue = stdValue ) # markup points after rules verified
-        specs = checkspec(pts=points, lsl=float(lsl), usl=float(usl), stdValue = float(stdValue))
+        nelsonBool = apply_rules(original=points, stdValue = float(stdValue) ) # markup points after rules verified
+        specs = checkspec(pts=points, lsl=float(lsl), usl=float(usl)) # stdValue = float(stdValue)
         df_list = nelsonBool.values.tolist()
         """
         Another parsing method requires to be mentioned.

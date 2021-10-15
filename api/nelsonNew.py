@@ -20,7 +20,7 @@ def GormToNelson(app):
         usl = request.args.get('usl')
         stdValue = request.args.get('stdValue')
         # print(points)
-        # print(usl,lsl)
+        # print(usl,lsl,stdValue)
         
         try:
             if (points == None) or (len(points) == 0):

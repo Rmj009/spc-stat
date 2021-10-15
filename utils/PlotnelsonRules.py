@@ -100,7 +100,7 @@ def apply_rules(original, stdValue, rules='all', chart_type=2):
     return df #, fig
 
 
-def checkspec(pts, lsl, usl):
+def checkspec(pts, lsl, usl): #, stdValue):
     """check out of spec boundary."""
     # copy_original = pts
     print(usl,lsl)

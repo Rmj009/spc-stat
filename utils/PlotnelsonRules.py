@@ -118,7 +118,7 @@ def checkspec(pts, lsl, usl):
     return results
 
 
-def rule1(original, mean, sigma):
+def rule1(original, mean, sigma, stdValue):
     """One point is more than 3 standard deviations from the mean."""
     if mean is None:
         mean = original.mean()
@@ -175,7 +175,7 @@ def rule2(original, mean, sigma, stdValue):
 
     return results
 
-def rule3(original, mean, sigma):
+def rule3(original, mean, sigma,stdValue):
     """Six (or more) points in a row are continually increasing (or decreasing)."""
     if mean is None:
         mean = original.mean()
@@ -211,7 +211,7 @@ def rule3(original, mean, sigma):
 
     return results
 
-def rule4(original, mean, sigma):
+def rule4(original, mean, sigma ,stdValue):
     """eight (or more) points in a row alternate in direction, increasing then decreasing."""
     if mean is None:
         mean = original.mean()
@@ -247,7 +247,7 @@ def rule4(original, mean, sigma):
 
     return results
 
-def rule5(original, mean, sigma):
+def rule5(original, mean, sigma ,stdValue):
     """Two (or three) out of three points in a row are more than 2 standard deviations from the mean in the same
     direction."""
 
@@ -273,7 +273,7 @@ def rule5(original, mean, sigma):
 
     return results
 
-def rule6(original, mean, sigma):
+def rule6(original, mean, sigma ,stdValue):
     """Four (or five) out of five points in a row are more than 1 standard deviation from the mean in the same
     direction."""
 
@@ -299,7 +299,7 @@ def rule6(original, mean, sigma):
 
     return results
 
-def rule7(original, mean, sigma):
+def rule7(original, mean, sigma ,stdValue):
     """Fifteen points in a row are all within 1 standard deviation of the mean on either side of the mean."""
     # revised to EIGHT points
 
@@ -326,7 +326,7 @@ def rule7(original, mean, sigma):
 
     return results
 
-def rule8(original, mean, sigma):
+def rule8(original, mean, sigma ,stdValue):
 
     """Eight points in a row exist, but none within 1 standard deviation of the mean, and the points are in both
     directions from the mean."""

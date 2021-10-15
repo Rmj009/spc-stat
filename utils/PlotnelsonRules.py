@@ -105,10 +105,10 @@ def checkspec(pts, lsl, usl):
     print(usl,lsl)
     results = []
     for i in pts:
-        if i >= usl:
+        if i > usl:
             print('usl')
             results.append(1)
-        elif i <= lsl:
+        elif i < lsl:
             print('lsl')
             results.append(1)
         else:
@@ -217,7 +217,7 @@ def rule4(original, mean, sigma):
     if sigma is None:
         sigma = original.std()
 
-    segment_len = 14
+    segment_len = 8
     copy_original = original
     chunks = _sliding_chunker(copy_original, segment_len, 1)
 

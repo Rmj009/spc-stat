@@ -5,7 +5,6 @@ from flask import request, abort
 spchart.py API including:
 1. Plot the control chart for univariate 
 """
-
 def plotSPCchart(app):
   @app.route("/v1/spchart", methods=['GET'])
   def spcChart():

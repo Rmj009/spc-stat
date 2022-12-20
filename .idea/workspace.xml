@@ -4,7 +4,6 @@
     <list default="true" id="b376e396-6789-43f2-bc3b-d53cd510bfb7" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/spc-backend-statistics.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/spc-backend-statistics.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/spchart.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/spchart.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
